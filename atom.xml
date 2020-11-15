@@ -6,7 +6,7 @@
   <link href="https://s0uthwood.github.io/atom.xml" rel="self"/>
   
   <link href="https://s0uthwood.github.io/"/>
-  <updated>2020-11-15T15:54:46.206Z</updated>
+  <updated>2020-11-15T17:01:12.540Z</updated>
   <id>https://s0uthwood.github.io/</id>
   
   <author>
@@ -21,12 +21,13 @@
     <link href="https://s0uthwood.github.io/2020/11/15/My-Latex-Cheatsheet/"/>
     <id>https://s0uthwood.github.io/2020/11/15/My-Latex-Cheatsheet/</id>
     <published>2020-11-15T15:45:58.000Z</published>
-    <updated>2020-11-15T15:54:46.206Z</updated>
+    <updated>2020-11-15T17:01:12.540Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>整理一下自己用过的latex命令。</p><a id="more"></a><h1 id="希腊字母"><a href="#希腊字母" class="headerlink" title="希腊字母"></a>希腊字母</h1><h1 id="二元运算符"><a href="#二元运算符" class="headerlink" title="二元运算符"></a>二元运算符</h1>]]></content>
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>整理一下自己用过的latex命令。</p><p>先占个坑，还没想好怎么写…</p><a id="more"></a><h1 id="希腊字母"><a href="#希腊字母" class="headerlink" title="希腊字母"></a>希腊字母</h1><h1 id="二元运算符"><a href="#二元运算符" class="headerlink" title="二元运算符"></a>二元运算符</h1>]]></content>
     
     
-    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;整理一下自己用过的latex命令。&lt;/p&gt;</summary>
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;整理一下自己用过的latex命令。&lt;/p&gt;
+&lt;p&gt;先占个坑，还没想好怎么写…&lt;/p&gt;</summary>
     
     
     
