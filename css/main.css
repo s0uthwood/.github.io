@@ -1193,7 +1193,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #9a6293;
+  background: #2a1abf;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2694,12 +2694,14 @@ mjx-container + br {
     margin: 8px 0 0;
   }
 }
+/*
 body {
-  background: url("/images/background.jpg");
+  background:url(/images/background.jpg);
   background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: 100% 100%;
+  background-attachment:fixed;
+  background-size:100% 100%;
 }
+*/
 .content-wrap {
   opacity: 0.9;
 }
