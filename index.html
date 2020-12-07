@@ -206,7 +206,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-12-08 01:33:07 / 修改时间：01:36:56" itemprop="dateCreated datePublished" datetime="2020-12-08T01:33:07+08:00">2020-12-08</time>
+              <time title="创建时间：2020-12-08 01:33:07 / 修改时间：01:40:26" itemprop="dateCreated datePublished" datetime="2020-12-08T01:33:07+08:00">2020-12-08</time>
             </span>
 
           <br>
@@ -215,7 +215,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>810</span>
+              <span>819</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -234,20 +234,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <a id="more"></a>
-<h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><h2 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h2><p>Fabric是一个许可区块链的分布式操作系统，可以执行多种编程语言编写的分布式应用。它能够在一个只能追加的数据结构中安全地跟踪执行历史，并且没有内置的加密账本。</p>
-<p>Fabric使用了“执行-order-验证”的区块链架构，而没有遵顼标准的“order-执行”设计。其整体的分布式应用可以分为两个部分</p>
-<ul>
-<li><p>智能合约，称为链码 (<em>Chaincode</em>) ，是一段实现了应用逻辑的程序代码，并在执行过程中运行。链码是Fabric分布式应用的核心部分，可能会被未受信任的开发者修改。有一种特殊的链码被用于管理区块链系统并维护参数，被称为系统链码 (<em>system chaincode</em>) </p>
-</li>
-<li><p>背书政策 (<em>endorsement policy</em>) 在验证阶段进行评价。许可政策无法被未受信任的开发者选择或修改。其在区块链中充当一个用于事物验证的静态库，且只能通过链码进行参数化。只有指定的管理员有权限使用系统管理功能修改。</p>
-</li>
-</ul>
-<p>“执行-排序-验证”结构示意图：</p>
-<p><img data-src="Screenshot 2020-12-06 023433.png" alt=""></p>
-<p>一个客户端向背书政策指定的节点(peers)发送交易。这个交易被特殊的节点执行并且记录输出信息，这一步骤被称为背书。执行完成后，交易进入了排序(ordering)阶段，在这一个阶段中，使用了一种可插入的共识协议来产生一个完成排序的已背书交易的序列，并按区块分组。这些交易被广播到所有的节点。这个序列的顺序由输出和状态的依赖性决定。在验证阶段，每个节点都需要根据背书政策和执行的一致性对已背书交易的状态变化进行验证。所有节点都已相同的顺序进行验证，因此结果具有确定性。</p>
-<h2 id="成员管理（MSP）"><a href="#成员管理（MSP）" class="headerlink" title="成员管理（MSP）"></a>成员管理（MSP）</h2><h2 id="执行阶段"><a href="#执行阶段" class="headerlink" title="执行阶段"></a>执行阶段</h2><p>在执行阶段，客户端签署并发送一个交易提案给一个或多个背书节点来执行（根据背书政策，每个chaincode都有特定的一组背书节点）。一个交易提案包含了提交客户端的身份（根据MSP），交易的载荷、参数、链码标识符、每个客户端只能使用以此的nonce（随机值或计数器），以及客户端标识符和nonce生成的交易标识符。</p>
-
+          <p>先学习一下架构部分</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/08/fabric%E5%AD%A6%E4%B9%A01-%E6%9E%B6%E6%9E%84/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

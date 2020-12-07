@@ -247,7 +247,8 @@
   <entry>
     <title>fabric学习1-架构</title>
     <url>/2020/12/08/fabric%E5%AD%A6%E4%B9%A01-%E6%9E%B6%E6%9E%84/</url>
-    <content><![CDATA[<a id="more"></a>
+    <content><![CDATA[<p>先学习一下架构部分</p>
+<a id="more"></a>
 <h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><h2 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h2><p>Fabric是一个许可区块链的分布式操作系统，可以执行多种编程语言编写的分布式应用。它能够在一个只能追加的数据结构中安全地跟踪执行历史，并且没有内置的加密账本。</p>
 <p>Fabric使用了“执行-order-验证”的区块链架构，而没有遵顼标准的“order-执行”设计。其整体的分布式应用可以分为两个部分</p>
 <ul>
