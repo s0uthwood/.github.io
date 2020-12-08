@@ -264,7 +264,14 @@
 <h2 id="交易的三个阶段"><a href="#交易的三个阶段" class="headerlink" title="交易的三个阶段"></a>交易的三个阶段</h2><p><img data-src="transaction_flow.png" alt="transaction_flow"></p>
 <h3 id="执行阶段"><a href="#执行阶段" class="headerlink" title="执行阶段"></a>执行阶段</h3><p>在执行阶段，客户端签署并发送一个交易提案给一个或多个背书节点来执行（根据背书政策，每个chaincode都有特定的一组背书节点）。一个交易提案包含了提交客户端的身份（根据MSP），交易的载荷、参数、链码标识符、每个客户端只能使用一次的nonce（随机值或计数器），以及客户端标识符和nonce生成的交易标识符。</p>
 <p>背书节点会对交易提案进行模拟，在指定的区块链链码上执行操作。模拟操作在背书节点的本地区块链状态中进行模拟，不与其它节点同步，也不会将模拟的结果永久化到帐本中。区块链的状态仍然由节点交易管理器(<em>Peer Transaction Manager</em>)维护。一个链码创建的状态只能限定在该链码上，不能被其他的链码直接访问。需要注意的是，链码只能维护GetState、PutState、DelState操作访问的内容（<em>可能意思是：需要使用这些接口进行访问，不能直接修改，猜测状态权限为private</em>）。给予适当的权限，链码可以调用同一个通道的链码，并访问其状态。</p>
-<h3 id="排序阶段"><a href="#排序阶段" class="headerlink" title="排序阶段"></a>排序阶段</h3><h3 id="验证阶段"><a href="#验证阶段" class="headerlink" title="验证阶段"></a>验证阶段</h3><h2 id="信任与故障模型"><a href="#信任与故障模型" class="headerlink" title="信任与故障模型"></a>信任与故障模型</h2><h1 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h1><h2 id="成员管理（MSP）"><a href="#成员管理（MSP）" class="headerlink" title="成员管理（MSP）"></a>成员管理（MSP）</h2>]]></content>
+<p>在模拟后，背书节点会产生一个<em>writeset</em>，其中包括模拟产生的状态更新，和一个<em>readset</em>，代表交易提案模拟的版本依赖（模拟时的所有密钥以及对应的版本号）。在模拟结束后，背书节点会以加密的方式签署一份“背书”消息，包括了<em>writeset</em>和<em>readset</em>（包括交易id和背书节点的一些数据），随后以响应的方式发送给客户端。客户端收集背书，直到满足链码的背书政策，开始交易。特别的，这要求政策决定的所有背书节点都返回相同的<em>writeset</em>和<em>readset</em>。然后，客户端将继续创建交易，并传递给排序阶段。</p>
+<h3 id="排序阶段"><a href="#排序阶段" class="headerlink" title="排序阶段"></a>排序阶段</h3><p>客户端收集到足够的背书后，将会把交易组装起来并发送给排序服务端。整个交易包括了载荷(<em>payload</em>)（包括参数的链码操作）、交易元数据、背书的集合。排序阶段对每个通道的所有提交建立了一个排序。排序服务端会将多个交易分成块，输出包含交易的哈希链序列，以提高广播协议的吞吐量。</p>
+<ul>
+<li><code>broadcast(tx)</code>：客户端调用这个函数来广播交易<code>tx</code>，包含了载荷和签名。</li>
+<li><code>B$$\leftarrow$$deliver(s)</code>：客户端调用这个函数来获取非负序列号<code>s</code>的区块<code>B</code>，$B=([tx_1,tx_2,\ldots,tx_k],h)$，$h$为<code>s-1</code>区块的哈希值。</li>
+</ul>
+<p>排序服务确保了一个通道中的交付区块被完全排序，确保安全。</p>
+<h3 id="验证阶段"><a href="#验证阶段" class="headerlink" title="验证阶段"></a>验证阶段</h3><h2 id="信任与故障模型"><a href="#信任与故障模型" class="headerlink" title="信任与故障模型"></a>信任与故障模型</h2><h1 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h1><h2 id="成员管理（MSP）"><a href="#成员管理（MSP）" class="headerlink" title="成员管理（MSP）"></a>成员管理（MSP）</h2>]]></content>
       <tags>
         <tag>crypto</tag>
         <tag>fabric</tag>
