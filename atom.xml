@@ -6,7 +6,7 @@
   <link href="https://s0uthwood.github.io/atom.xml" rel="self"/>
   
   <link href="https://s0uthwood.github.io/"/>
-  <updated>2020-12-08T22:15:40.204Z</updated>
+  <updated>2020-12-09T15:20:52.447Z</updated>
   <id>https://s0uthwood.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>not RSA WriteUp</title>
+    <link href="https://s0uthwood.github.io/2020/12/09/not-RSA-WriteUp/"/>
+    <id>https://s0uthwood.github.io/2020/12/09/not-RSA-WriteUp/</id>
+    <published>2020-12-09T14:34:12.000Z</published>
+    <updated>2020-12-09T15:20:52.447Z</updated>
+    
+    <content type="html"><![CDATA[<p>题目来源：安恒四月赛（DASCTF 2020）</p><h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> AITMCLab.libnum <span class="keyword">import</span> gcd, invmod, s2n</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> isPrime</span><br><span class="line"><span class="keyword">from</span> secret <span class="keyword">import</span> flag</span><br><span class="line">p = <span class="number">104879397075344024438671231239628115011303349344697797964879592144922079000957</span> </span><br><span class="line">q = <span class="number">104879397075344024438671231239628115011303349344697797964879592144922079001013</span></span><br><span class="line"><span class="keyword">assert</span> isPrime(p) <span class="keyword">and</span> isPrime(q)</span><br><span class="line">n = p * q</span><br><span class="line">flag = s2n(flag)</span><br><span class="line">r = randint(<span class="number">1</span>, n)</span><br><span class="line">c = (<span class="built_in">pow</span>(n + <span class="number">1</span>, flag, n * n) * <span class="built_in">pow</span>(r, n, n * n)) % (n * n)</span><br><span class="line"><span class="built_in">print</span> c</span><br><span class="line"><span class="comment"># c = 13134489820394613222282607681686272081419875146946401883172682167011759113388373349180457979897848113275982219264879081189886853062717764580364698888338032141434053832247476010400449272010082460437747190468766740274587999336359171283098137261396013153130265440425676242061845667887640808895666325466803989428</span></span><br></pre></td></tr></table></figure><h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>代码很简单，就是道纯数学题</p><p>由源码：</p><p>$c\equiv (n+1)^f\cdot r^n\ (\mathrm{mod}\ n^2)$</p><p>根据二项式定理：</p><p>$c\equiv (fn+1)\cdot r^n\ (mod\ n^2)$</p><p>左右两式同乘$\varphi(n)$次方，得$c^{\varphi(n)}\equiv (fn+1)^{\varphi(n)}\cdot r^{n\varphi(n)}\ (mod\ n^2)$</p><p>由$\varphi(n^2)=n\cdot \varphi(n)$且当$r\neq p$或$r\neq q$时有，$gcd(r,n)=1$可知，$r^{n\varphi(n)}\equiv 1\ (mod\ n^2)$，可得：</p><p>$c^{\varphi(n)}\equiv (fn+1)^{\varphi(n)}\ (mod\ n^2)$</p><p>因为r为随机数，所以$r\neq p,q$的概率为$\dfrac{2}{n}$，可认为$gcd(r,n)=1$成立。</p><p>再次使用二次项定理，可得$c^{\varphi(n)}\equiv fn\varphi(n)+1\ (mod\ n^2)$</p><p>由费曼小定理可知$c^{\varphi(n)}\equiv 1\ (mod\ n)$，即$n|c^{\varphi(n)}-1$，因此将1移到同余式左边并对同余式同除n，得：</p><p>$\dfrac{c^{\varphi(n)}-1}{n}\equiv f\varphi(n)\ (mod\ n)$</p><p>对于左式，设$\dfrac{c^{\varphi(n)}-1}{n}=kn+r’$</p><p>$c^{\varphi(n)}=kn^2+rn+1$</p><p>只需求解出$rn+1$即可，因此可以对$c^{\varphi(n)}$进行模$n^2$，实现时可直接使用python中的pow函数。</p><p>将左式求解后，化为求解$\varphi(n)\cdot f\equiv r’\ (mod\ n)$，即$f\equiv \varphi(n)^{-1}\cdot r’\ (mod\ n)$</p><h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> AITMCLab.libnum <span class="keyword">import</span> s2n, invmod, n2s</span><br><span class="line"></span><br><span class="line">c = <span class="number">131344898203946132222826076816862720814198751469464018831726821670</span> <span class="number">117591133883733491804579798978481132759822192648790811898868530627</span> <span class="number">177645803646988883380321414340538322474760104004492720100824604377</span> <span class="number">471904687667402745879993363591712830981372613960131531302654404256</span> <span class="number">76242061845667887640808895666325466803989428</span></span><br><span class="line">p = <span class="number">104879397075344024438671231239628115011303349344697797964879592144</span> <span class="number">922079000957</span> </span><br><span class="line">q = <span class="number">104879397075344024438671231239628115011303349344697797964879592144</span> <span class="number">922079001013</span></span><br><span class="line">phi_n = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">n = p * q</span><br><span class="line">r = (<span class="built_in">pow</span>(c, phi_n, n * n) - <span class="number">1</span>) // n</span><br><span class="line"><span class="built_in">print</span> n2s(r * invmod(phi_n, n) % n)</span><br></pre></td></tr></table></figure><h1 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h1><p>flag\{can_you_find_me??\}</p><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>纯数学题</p><p>学长带着推了一遍。。。这也太难了。。。</p><p>听说是<em>paillier</em>加密，果然不是RSA</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;题目来源：安恒四月赛（DASCTF 2020）&lt;/p&gt;
+&lt;h1 id=&quot;题目&quot;&gt;&lt;a href=&quot;#题目&quot; class=&quot;headerlink&quot; title=&quot;题目&quot;&gt;&lt;/a&gt;题目&lt;/h1&gt;&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;t</summary>
+      
+    
+    
+    
+    
+    <category term="crypto" scheme="https://s0uthwood.github.io/tags/crypto/"/>
+    
+  </entry>
   
   <entry>
     <title>fabric学习1-架构</title>
