@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"s0uthwood.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="题目来自N1CTF 2019">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BabyRSA WriteUp">
+<meta property="og:url" content="https://s0uthwood.github.io/2020/12/09/BabyRSA-WriteUp/index.html">
+<meta property="og:site_name" content="s0uthwood&#39;s Blog">
+<meta property="og:description" content="题目来自N1CTF 2019">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-09T15:27:25.000Z">
+<meta property="article:modified_time" content="2020-12-09T15:31:35.541Z">
+<meta property="article:author" content="s0uthwood">
+<meta property="article:tag" content="crypto">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://s0uthwood.github.io/2020/12/09/BabyRSA-WriteUp/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>BabyRSA WriteUp | s0uthwood's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="s0uthwood's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">s0uthwood's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2020/12/09/BabyRSA-WriteUp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="s0uthwood">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="s0uthwood's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BabyRSA WriteUp
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-09 23:27:25 / 修改时间：23:31:35" itemprop="dateCreated datePublished" datetime="2020-12-09T23:27:25+08:00">2020-12-09</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>题目来自N1CTF 2019</p>
+<a id="more"></a>
+<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util <span class="keyword">import</span> number</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> secret <span class="keyword">import</span> flag</span><br><span class="line">N = <span class="number">23981306327188221819291352455300124608114670714977979223022816906368788909398653961976023086718129607035805397846230124785550919468973090809881210560931396002918119995710297723411794214888622784232065592366390586879306041418300835178522354945438521139847806375923379136235993890801176301812907708937658277646761892297209069757559519399120988948212988924583632878840216559421398253025960456164998680766732013248599742397199862820924441357624187811402515396393385081892966284318521068948266144251848088067639941653475035145362236917008153460707675427945577597137822575880268720238301307972813226576071488632898694390629</span></span><br><span class="line">e = <span class="number">0x10001</span></span><br><span class="line">m = number.bytes_to_long(flag)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;flag.enc&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">while</span> m:</span><br><span class="line">        padding = random.randint(<span class="number">0</span>, <span class="number">2</span>**<span class="number">1000</span>) ** <span class="number">2</span></span><br><span class="line">        message = padding &lt;&lt; <span class="number">1</span> + m % <span class="number">2</span></span><br><span class="line">        cipher = <span class="built_in">pow</span>(message, e, N)</span><br><span class="line">        f.write(<span class="built_in">hex</span>(cipher)+<span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">        m /= <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>首先阅读代码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> m:</span><br><span class="line">    <span class="comment"># several operations</span></span><br><span class="line">    m /= <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>由上述代码部分以及过程中出现了<code>m % 2</code>操作可知，flag的二进制数据每一位被存进了<code>key.enc</code>文件的每行数据中，因此对<code>key.enc</code>文件的每一行进行读取，只要能够判断该位为0还是1，即可完成解密。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">padding = random.randint(<span class="number">0</span>, <span class="number">2</span>**<span class="number">1000</span>) ** <span class="number">2</span></span><br><span class="line">message = padding &lt;&lt; <span class="built_in">pow</span>(m, p - <span class="number">1</span>, p) + m % <span class="number">2</span></span><br><span class="line">cipher = <span class="built_in">pow</span>(message, e, N)</span><br></pre></td></tr></table></figure>
+<p>由上述代码可知，$c\equiv m^e\ (\mathrm{mod}\ N), m = r^2\cdot 2^{1+flag\%2}$ （r为random结果），因此<code>m%2=1</code>时，有$c\equiv r^2\cdot 2^2\equiv (2^er^e)^2\ (\mathrm{mod}\ N)$，而<code>m%2=0</code>时，有$c\equiv 2^e\cdot r^{2^e}$。</p>
+<p>首先猜测可以通过破解RSA密码，将加密信息还原为明文信息，判断该数整除2的奇数次方还是偶数次方即可得知该位的二进制数。使用factordb网站失败后贼心不死，又尝试了网上找的多种攻击脚本，发现均无法分解，于是寻找其它方法。</p>
+<p>观察<del>README.md</del>发现，本题可以尝试用二次剩余求解。<code>m%2=1</code>时，有$c\equiv (2^er^e)^2\ (\mathrm{mod}\ N)$，<code>m%2=0</code>时，有$c\equiv (2\cdot r^2)^e\ (\mathrm{mod}\ N)$，因此，当c为N的二次剩余时，对应<code>m%2=1</code>，c为N的二次非剩余时，对应<code>m%2=0</code>。</p>
+<p>可以使用Jacobi判断是否为二次剩余。只需满足$\left(\dfrac{2^e\cdot r^{2^e}}{N}\right)=-1$即可求解。由于$\left(\dfrac{2^e\cdot r^{2^e}}{N}\right)=\left(\dfrac{2}{p}\right)\left(\dfrac{2}{q}\right)$，所以当<code>m%2=0</code>时，Jacobi计算结果仅取决于p和q，且在实际计算中发现存在Jacobi计算结果为-1的情况，又因为<code>m%2=1</code>时Jacobi计算结果必然为1，说明本题中2分别是p和q的二次剩余和二次非剩余，可得下式</p>
+<script type="math/tex; mode=display">
+\left(\dfrac{c}{N}\right)= \begin{cases}\left(\dfrac{2}{p}\right)\left(\dfrac{2}{q}\right)=-1,m\%2=0\\1, m\%2=1\end{cases}</script><p>因此可以用Jacobi来计算flag的二进制结果。</p>
+<h1 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> AITMCLab.Crypto.Util.number <span class="keyword">import</span> long_to_bytes</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">jacobi</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    res = <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> a == <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> (<span class="number">-1</span>) ** ((b * b - <span class="number">1</span>) / <span class="number">8</span>)</span><br><span class="line">    <span class="keyword">if</span> a == b - <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> (<span class="number">-1</span>) ** ((b - <span class="number">1</span>) / <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">if</span> a == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> a % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">        res *= jacobi(<span class="number">2</span>, b)</span><br><span class="line">        a /= <span class="number">2</span></span><br><span class="line">    res *= (<span class="number">-1</span>)**((a - <span class="number">1</span>) * (b - <span class="number">1</span>) / <span class="number">4</span>) * jacobi(b % a, a)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line">n = <span class="number">21950613536281390486175757463951027643556662621824579929664918617520636813458994325720569579695736856079459340474316751889021883755540017377473409564797843019125596929359598746535191841338208989879009508321774759757392464348925062704618198548398309908878380041795632951630513476281083426748653263731919122841901104123145297521411331174923397782111024006706017326210374498919922250769088886696170966869394222786903527353128540253585182758832324462426318387914150570168191590734053846371944717431858873198597415498765665035309188308408227521317670668417094970551798085092238594309838065757300622761550073415879726501051</span></span><br><span class="line">flag = <span class="number">0</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;key.enc&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">        line = line.strip(<span class="string">&quot;L\n&quot;</span>)    <span class="comment"># Filter out &quot;L\n&quot; at the end of line</span></span><br><span class="line">        cur = <span class="built_in">int</span>(line, <span class="number">16</span>)         <span class="comment"># Convert hax string to number</span></span><br><span class="line">        <span class="keyword">if</span> (jacobi(cur, n) == <span class="number">1</span>):</span><br><span class="line">            flag += <span class="number">1</span> &lt;&lt; i</span><br><span class="line">        i += <span class="number">1</span></span><br><span class="line">        <span class="built_in">print</span> flag</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> flag</span><br><span class="line"><span class="built_in">print</span> long_to_bytes(flag)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>首先从<code>key.enc</code>中逐行读取，并对每一行结尾的’L\n’进行过滤，将其转换为整数cur后，计算Jacobi符号$J\left( cur, N\right)$。计算Jacobi符号时主要使用二次互反律进行计算（可以再使用其它定律进行加速，但没必要）。</p>
+<p>由于第一行储存的为flag的最后一位（即从后往前储存），因此进行<code>flag += 1 &lt;&lt; i</code>即可将相应位置的二进制结果还原。</p>
+<h1 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h1><p>N1CTF\{You_can_leak_the_jacobi_symbol_from_RSA\}</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这道题在代码阅读上难度较低，唯一需要留意的地方就是<code>padding &lt;&lt; pow(m, p - 1, p) + m % 2</code>这个运算的优先级问题（感谢bg的注释提示）。把代码转换成数学公式后，二次剩余的方法就比较明显了，需要注意的是<code>Jacobi</code>符号无法准确判断二次剩余与二次非剩余（感谢bg指出了这个问题），简单推导后发现这个方法有一定的使用条件，如果题目中的p和q不满足一定的条件，这个方法就无法正确区分0和1。</p>
+<hr>
+<p>后经大佬提醒发现这道题用的是Goldwasser-Micali密码（上课走神实锤了）。简单对比发现，当GM密码选取的x满足<code>J(x, p) = 1</code>且<code>J(x, q) = -1</code>时，可能能够利用本题的方法进行破解。因此选取的x不能仅满足是n的二次非剩余，需要同时是p和q的二次非剩余。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/crypto/" rel="tag"># crypto</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/09/not-RSA-WriteUp/" rel="prev" title="not RSA WriteUp">
+      <i class="fa fa-chevron-left"></i> not RSA WriteUp
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">源代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AD%94%E6%A1%88"><span class="nav-number">4.</span> <span class="nav-text">答案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="s0uthwood"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">s0uthwood</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">s0uthwood</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">20k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">19 分钟</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
