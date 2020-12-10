@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://s0uthwood.github.io/2020/12/08/fabric%E5%AD%A6%E4%B9%A01-%E6%9E%B6%E6%9E%84/execute-order-validate.png">
 <meta property="og:image" content="https://s0uthwood.github.io/2020/12/08/fabric%E5%AD%A6%E4%B9%A01-%E6%9E%B6%E6%9E%84/transaction_flow.png">
 <meta property="article:published_time" content="2020-12-07T17:33:07.000Z">
-<meta property="article:modified_time" content="2020-12-10T16:41:10.313Z">
+<meta property="article:modified_time" content="2020-12-10T20:01:57.073Z">
 <meta property="article:author" content="s0uthwood">
 <meta property="article:tag" content="crypto">
 <meta property="article:tag" content="fabric">
@@ -221,7 +221,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-11 00:41:10" itemprop="dateModified" datetime="2020-12-11T00:41:10+08:00">2020-12-11</time>
+                <time title="修改时间：2020-12-11 04:01:57" itemprop="dateModified" datetime="2020-12-11T04:01:57+08:00">2020-12-11</time>
               </span>
 
           <br>
@@ -230,14 +230,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.1k</span>
+              <span>5.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -305,6 +305,20 @@
 <li>从接收到第一个交易后超过某特定时间</li>
 </ul>
 <p>批处理的过程是确定的，因此在所有节点上都会产生相同的区块。考虑到从广播中接收的交易数据流，前两项情况是已经确定的。对于第三个条件，当节点读入块中的第一个交易时，会开启一个计时器。如果计时器超时后，这个区块仍然没有断开，OSN会在通道上广播一个特殊的“到时断开(<em>time-to-cut</em>)”交易，其中记录了需要断开的区块的序列号。另一方面，每个OSN在收到“到时断开”交易后，会根据其给定的序列号，立即切断新的区块。这个交易是原子性的分发给所有连接的OSN，所以区块中都包含相同的交易列表。OSN将最近交付的一系列区块直接持久化到文件系统中，因此可以通过分发回答peer节点来回收区块。</p>
+<h2 id="Peer-Gossip"><a href="#Peer-Gossip" class="headerlink" title="Peer Gossip"></a>Peer Gossip</h2><p>将三个阶段分开的好处是在开发的时候可以独立扩展。然而，由于共识算法往往有带宽限制，排序服务的吞吐量被节点的网络容量所限制。共识无法通过增加节点而扩展，反而会让吞吐量降低。然而，由于排序和验证是分开的，在排序阶段后，重要的是如何有效地广播执行阶段的结果，以交给peer节点进行验证。此外，还有如何对新加入的peer节点和长期断开的peer节点进行状态转移。这两个问题就是gossip组件所需要解决的。Fabric gossip利用流行组播(<em>epidemic multicast</em>)来解决这个问题。区块是由排序服务签署的。这意味着一个peer节点在收到所有区块后，可以独立的组装为区块链并验证其完整性。</p>
+<p>gossip的通信基于gRPC，利用TLS（传输层安全协议）进行相互识别，使得每一方都可以将TLS凭证与远程peer节点的身份绑定。gossip组件用来维护系统中当前在线的peer节点的成员视图。所有的peer节点通过定期传播成员数据独立建立一个本地视图。此外，一个peer节点可以在网络崩溃或者中断后重新连入成员视图。</p>
+<p>Fabric的gossip组件采用了两个阶段进行信息的传播：</p>
+<ul>
+<li>在<em>push</em>阶段，每个peer节点从成员视图中选择一个随机的活跃邻居集合，并向他们发送信息</li>
+<li>在<em>pull</em>阶段，每个peer节点定期探测一个随机选择的peer节点集合，并请求缺失的信息</li>
+</ul>
+<blockquote>
+<p>研究表明，同时使用这两种方法可以优化可用带宽并确保所有peer节点有很高的概率接收到所有信息。</p>
+</blockquote>
+<p>为了减少从排序节点向网络中发送的区块的负载，协议同时在peer中选择了一个领导者(<em>elects a leader peer</em>)，代表peer节点从排序服务中<em>pull</em>区块，并启动gossip分发。这个机制对领导者出现故障具有弹性。</p>
+<h2 id="分布式账本-Ledger"><a href="#分布式账本-Ledger" class="headerlink" title="分布式账本(Ledger)"></a>分布式账本(<em>Ledger</em>)</h2><p>账本组件在各个peer节点中维持分布式账本并建立持久性的存储，并实现账本的模拟、验证和更新阶段。整体上由一个区块存储(<em>block store</em>)和一个peer节点交易管理器(<em>peer transaction manager</em>)组成。</p>
+<p>账本区块存储持久化交易区块，并以一组仅追加文件的形式实现。由于区块无法被改变，并以一个特定的顺序到达，一个仅追加的结构能够带来最好的性能。此外，区块存储中维护了一些索引，用来随机访问区块或区块中的交易。</p>
+<p>peer节点交易管理器(PTM)维护了<!--To Be Continue--></p>
 
     </div>
 
@@ -389,7 +403,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">整体结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E6%98%93%E7%9A%84%E4%B8%89%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="nav-number">1.2.</span> <span class="nav-text">交易的三个阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E9%98%B6%E6%AE%B5"><span class="nav-number">1.2.1.</span> <span class="nav-text">执行阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E9%98%B6%E6%AE%B5"><span class="nav-number">1.2.2.</span> <span class="nav-text">排序阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E9%98%B6%E6%AE%B5"><span class="nav-number">1.2.3.</span> <span class="nav-text">验证阶段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E4%BB%BB%E4%B8%8E%E6%95%85%E9%9A%9C%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.3.</span> <span class="nav-text">信任与故障模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">组件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%90%E5%91%98%E8%BA%AB%E4%BB%BD%E7%AE%A1%E7%90%86%E6%9C%8D%E5%8A%A1%EF%BC%88MSP%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">成员身份管理服务（MSP）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.2.</span> <span class="nav-text">排序服务</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">整体结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E6%98%93%E7%9A%84%E4%B8%89%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="nav-number">1.2.</span> <span class="nav-text">交易的三个阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E9%98%B6%E6%AE%B5"><span class="nav-number">1.2.1.</span> <span class="nav-text">执行阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E9%98%B6%E6%AE%B5"><span class="nav-number">1.2.2.</span> <span class="nav-text">排序阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E9%98%B6%E6%AE%B5"><span class="nav-number">1.2.3.</span> <span class="nav-text">验证阶段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E4%BB%BB%E4%B8%8E%E6%95%85%E9%9A%9C%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.3.</span> <span class="nav-text">信任与故障模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">组件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%90%E5%91%98%E8%BA%AB%E4%BB%BD%E7%AE%A1%E7%90%86%E6%9C%8D%E5%8A%A1%EF%BC%88MSP%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">成员身份管理服务（MSP）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.2.</span> <span class="nav-text">排序服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Peer-Gossip"><span class="nav-number">2.3.</span> <span class="nav-text">Peer Gossip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E8%B4%A6%E6%9C%AC-Ledger"><span class="nav-number">2.4.</span> <span class="nav-text">分布式账本(Ledger)</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -405,14 +419,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -452,12 +466,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">21k</span>
+    <span title="站点总字数">23k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">19 分钟</span>
+    <span title="站点阅读时长">21 分钟</span>
 </div>
 
 <!--

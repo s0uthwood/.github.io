@@ -303,6 +303,20 @@
 <li>从接收到第一个交易后超过某特定时间</li>
 </ul>
 <p>批处理的过程是确定的，因此在所有节点上都会产生相同的区块。考虑到从广播中接收的交易数据流，前两项情况是已经确定的。对于第三个条件，当节点读入块中的第一个交易时，会开启一个计时器。如果计时器超时后，这个区块仍然没有断开，OSN会在通道上广播一个特殊的“到时断开(<em>time-to-cut</em>)”交易，其中记录了需要断开的区块的序列号。另一方面，每个OSN在收到“到时断开”交易后，会根据其给定的序列号，立即切断新的区块。这个交易是原子性的分发给所有连接的OSN，所以区块中都包含相同的交易列表。OSN将最近交付的一系列区块直接持久化到文件系统中，因此可以通过分发回答peer节点来回收区块。</p>
+<h2 id="Peer-Gossip"><a href="#Peer-Gossip" class="headerlink" title="Peer Gossip"></a>Peer Gossip</h2><p>将三个阶段分开的好处是在开发的时候可以独立扩展。然而，由于共识算法往往有带宽限制，排序服务的吞吐量被节点的网络容量所限制。共识无法通过增加节点而扩展，反而会让吞吐量降低。然而，由于排序和验证是分开的，在排序阶段后，重要的是如何有效地广播执行阶段的结果，以交给peer节点进行验证。此外，还有如何对新加入的peer节点和长期断开的peer节点进行状态转移。这两个问题就是gossip组件所需要解决的。Fabric gossip利用流行组播(<em>epidemic multicast</em>)来解决这个问题。区块是由排序服务签署的。这意味着一个peer节点在收到所有区块后，可以独立的组装为区块链并验证其完整性。</p>
+<p>gossip的通信基于gRPC，利用TLS（传输层安全协议）进行相互识别，使得每一方都可以将TLS凭证与远程peer节点的身份绑定。gossip组件用来维护系统中当前在线的peer节点的成员视图。所有的peer节点通过定期传播成员数据独立建立一个本地视图。此外，一个peer节点可以在网络崩溃或者中断后重新连入成员视图。</p>
+<p>Fabric的gossip组件采用了两个阶段进行信息的传播：</p>
+<ul>
+<li>在<em>push</em>阶段，每个peer节点从成员视图中选择一个随机的活跃邻居集合，并向他们发送信息</li>
+<li>在<em>pull</em>阶段，每个peer节点定期探测一个随机选择的peer节点集合，并请求缺失的信息</li>
+</ul>
+<blockquote>
+<p>研究表明，同时使用这两种方法可以优化可用带宽并确保所有peer节点有很高的概率接收到所有信息。</p>
+</blockquote>
+<p>为了减少从排序节点向网络中发送的区块的负载，协议同时在peer中选择了一个领导者(<em>elects a leader peer</em>)，代表peer节点从排序服务中<em>pull</em>区块，并启动gossip分发。这个机制对领导者出现故障具有弹性。</p>
+<h2 id="分布式账本-Ledger"><a href="#分布式账本-Ledger" class="headerlink" title="分布式账本(Ledger)"></a>分布式账本(<em>Ledger</em>)</h2><p>账本组件在各个peer节点中维持分布式账本并建立持久性的存储，并实现账本的模拟、验证和更新阶段。整体上由一个区块存储(<em>block store</em>)和一个peer节点交易管理器(<em>peer transaction manager</em>)组成。</p>
+<p>账本区块存储持久化交易区块，并以一组仅追加文件的形式实现。由于区块无法被改变，并以一个特定的顺序到达，一个仅追加的结构能够带来最好的性能。此外，区块存储中维护了一些索引，用来随机访问区块或区块中的交易。</p>
+<p>peer节点交易管理器(PTM)维护了<!--To Be Continue--></p>
 ]]></content>
       <tags>
         <tag>crypto</tag>
@@ -463,6 +477,28 @@
 ]]></content>
       <tags>
         <tag>crypto</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gRPC 介绍</title>
+    <url>/2020/12/11/gRPC-%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<p>学习gRPC框架原理</p>
+<a id="more"></a>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><blockquote>
+<p>A high-performance, open-source universal RPC framework</p>
+</blockquote>
+<p>gRPC框架具有高性能，开源，跨语言的特点，使用了RPC框架，基于HTTP/2设计。</p>
+<blockquote>
+<p>RPC(<em>remote procedure call</em> 远程过程调用)框架提供了一套机制，使得应用程序之间可以进行通信，遵从server/client模型。<br>RPC将一个服务调用封装在一个本地方法中，让调用者像使用本地方法一样调用服务，对其屏蔽实现细节。具体的实现则通过调用方和服务方的协议，基于TCP连接进行数据交互达成。</p>
+<p>在本地调用过程中，通常需要通过接口，调用具体实现，最终获取相应的数据。<br>而在RPC中，本地获取到接口，随后通过网络，调用远程的实现。在使用网络时，需要通过数据序列化来传输数据。</p>
+</blockquote>
+<p>在gRPC中，支持多个语言的应用程序的远程调用，数据交换格式则采用了<em>Protocol Buffer</em>。</p>
+<p><img data-src="gRPC-basic.png" alt="gRPC-basic"></p>
+<p>如上图所示，左侧为c++语言编写的客户端，其中包含了接口的具体实现。右侧为Ruby和Java客户端，其中对接口进行了调用。客户端获取接口后，将数据通过<em>Protocol Buffer</em>的序列化处理后交给服务端，服务端调用具体实现，并把数据同样以序列化的形式返回给客户端。</p>
+]]></content>
+      <tags>
+        <tag>fabric</tag>
+        <tag>rpc</tag>
       </tags>
   </entry>
 </search>
