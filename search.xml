@@ -269,7 +269,7 @@
 <h3 id="排序阶段"><a href="#排序阶段" class="headerlink" title="排序阶段"></a>排序阶段</h3><p>客户端收集到足够的背书后，将会把交易组装起来并发送给排序服务端。整个交易包括了载荷(<em>payload</em>)（包括参数的链码操作）、交易元数据、背书的集合。排序阶段对每个通道的所有提交建立了一个排序。排序服务端会将多个交易分成块，输出包含交易的哈希链序列，以提高广播协议的吞吐量。</p>
 <ul>
 <li><code>broadcast(tx)</code>：客户端调用这个函数来广播交易<code>tx</code>，包含了载荷和签名。</li>
-<li><code>B$\leftarrow$deliver(s)</code>：客户端调用这个函数来获取非负序列号<code>s</code>的区块<code>B</code>，$B=([tx_1,tx_2,\ldots,tx_k],h)$，$h$为<code>s-1</code>区块的哈希值。</li>
+<li><code>B</code> $\leftarrow$ <code>deliver(s)</code>：客户端调用这个函数来获取非负序列号<code>s</code>的区块<code>B</code>，$B=([tx_1,tx_2,\ldots,tx_k],h)$，$h$为<code>s-1</code>区块的哈希值。</li>
 </ul>
 <p>排序服务确保了一个通道中的交付区块被完全排序，确保安全。</p>
 <p>然而，每一个单独的排序实现都允许在客户端请求中保证自己的活跃性与公平性。</p>
