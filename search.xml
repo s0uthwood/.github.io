@@ -708,6 +708,7 @@
     <title>Reverse入门</title>
     <url>/2021/01/15/Reverse%E5%85%A5%E9%97%A8/</url>
     <content><![CDATA[<p>几道BUUCTF上的Reverse入门题题解</p>
+<a id="more"></a>
 <h1 id="内涵的软件"><a href="#内涵的软件" class="headerlink" title="内涵的软件"></a>内涵的软件</h1><p>首先使用file命令，发现exe是32位的，将其拖入ida中</p>
 <p>进入main函数</p>
 <p>点击进入main0函数</p>
