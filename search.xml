@@ -29,9 +29,9 @@
       </tags>
   </entry>
   <entry>
-    <title>GUETCTF2019 reverse writeups</title>
+    <title>GUETCTF2019 re writeups</title>
     <url>/2021/03/04/GUETCTF2019-reverse-writeups/</url>
-    <content><![CDATA[<p>平台：buuoj</p>
+    <content><![CDATA[<p>平台：BUUOJ</p>
 <a id="more"></a>
 <h1 id="re"><a href="#re" class="headerlink" title="re"></a>re</h1><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>先upx脱壳</p>
 <p>然后拖入ida</p>
