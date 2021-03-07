@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"s0uthwood.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="平台：BUUOJ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WUSTCTF2020 re writeups">
+<meta property="og:url" content="https://s0uthwood.github.io/2021/03/07/WUSTCTF2020-re-writeups/index.html">
+<meta property="og:site_name" content="s0uthwood&#39;s Blog">
+<meta property="og:description" content="平台：BUUOJ">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s0uthwood.github.io/2021/03/07/WUSTCTF2020-re-writeups/patch.png">
+<meta property="article:published_time" content="2021-03-07T13:35:10.000Z">
+<meta property="article:modified_time" content="2021-03-07T13:39:34.851Z">
+<meta property="article:author" content="s0uthwood">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="Reverse">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s0uthwood.github.io/2021/03/07/WUSTCTF2020-re-writeups/patch.png">
+
+<link rel="canonical" href="https://s0uthwood.github.io/2021/03/07/WUSTCTF2020-re-writeups/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>WUSTCTF2020 re writeups | s0uthwood's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="s0uthwood's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">s0uthwood's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/03/07/WUSTCTF2020-re-writeups/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="s0uthwood">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="s0uthwood's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          WUSTCTF2020 re writeups
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-07 21:35:10 / 修改时间：21:39:34" itemprop="dateCreated datePublished" datetime="2021-03-07T21:35:10+08:00">2021-03-07</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>平台：BUUOJ</p>
+<a id="more"></a>
+<h1 id="Crossfun"><a href="#Crossfun" class="headerlink" title="Crossfun"></a>Crossfun</h1><p>拖入ida，发现有个判断函数，里面对输入的每个字符进行了判断，把所有判断函数整合起来，就得到flag了</p>
+<p>flag: <code>wctf2020&#123;cpp_@nd_r3verse_@re_fun&#125;</code></p>
+<h1 id="level1"><a href="#level1" class="headerlink" title="level1"></a>level1</h1><p>拖入ida</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">stream = fopen(<span class="string">&quot;flag&quot;</span>, <span class="string">&quot;r&quot;</span>);</span><br><span class="line">fread(ptr, <span class="number">1u</span>LL, <span class="number">0x14</span>uLL, stream);</span><br><span class="line">fclose(stream);</span><br><span class="line"><span class="keyword">for</span> ( i = <span class="number">1</span>; i &lt;= <span class="number">19</span>; ++i ) &#123;</span><br><span class="line">    <span class="keyword">if</span> ( i &amp; <span class="number">1</span> )</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%ld\n&quot;</span>, (<span class="keyword">unsigned</span> <span class="keyword">int</span>)(ptr[i] &lt;&lt; i));</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%ld\n&quot;</span>, (<span class="keyword">unsigned</span> <span class="keyword">int</span>)(i * ptr[i]));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>显然 <code>ptr</code> 里面就是flag</p>
+<p>看到 output.txt 里面正好有19行</p>
+<p>对其进行逆变换（注意0）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ptr = [<span class="number">0</span>, <span class="number">198</span>, <span class="number">232</span>, <span class="number">816</span>, <span class="number">200</span>, <span class="number">1536</span>, <span class="number">300</span>, <span class="number">6144</span>, <span class="number">984</span>, <span class="number">51200</span>, <span class="number">570</span>, <span class="number">92160</span>, <span class="number">1200</span>, <span class="number">565248</span>, <span class="number">756</span>, <span class="number">1474560</span>, <span class="number">800</span>, <span class="number">6291456</span>, <span class="number">1782</span>, <span class="number">65536000</span>]</span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">20</span>):</span><br><span class="line">    <span class="keyword">if</span> i % <span class="number">2</span> == <span class="number">1</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>(ptr[i] &gt;&gt; i)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>(ptr[i] // i)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> (flag)</span><br></pre></td></tr></table></figure>
+<p>得到flag <code>ctf2020&#123;d9-dE6-20c&#125;</code></p>
+<h1 id="level2"><a href="#level2" class="headerlink" title="level2"></a>level2</h1><p>先使用upx进行脱壳</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">upx -d attachment</span><br></pre></td></tr></table></figure>
+<p>进入main函数</p>
+<p>还没来得及按 <code>tab</code> 前就看到了flag</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">; __unwind &#123;</span><br><span class="line">lea     ecx, [esp+4]</span><br><span class="line">and     esp, 0FFFFFFF0h</span><br><span class="line">push    dword ptr [ecx-4]</span><br><span class="line">push    ebp</span><br><span class="line">mov     ebp, esp</span><br><span class="line">push    ecx</span><br><span class="line">sub     esp, 14h</span><br><span class="line">mov     [ebp+var_C], offset flag ; &quot;wctf2020&#123;Just_upx_-d&#125;&quot;</span><br><span class="line">sub     esp, 0Ch</span><br><span class="line">push    offset aWhereIsIt ; &quot;where is it?&quot;</span><br><span class="line">call    puts</span><br><span class="line">add     esp, 10h</span><br><span class="line">mov     eax, 0</span><br><span class="line">mov     ecx, [ebp+var_4]</span><br><span class="line">leave</span><br><span class="line">lea     esp, [ecx-4]</span><br><span class="line">retn</span><br><span class="line">; &#125; &#x2F;&#x2F; starts at 804887C</span><br></pre></td></tr></table></figure>
+<p>这件事情告诉我们还是要看汇编代码的</p>
+<p><code>flag&#123;Just_upx_-d&#125;</code></p>
+<h1 id="level3"><a href="#level3" class="headerlink" title="level3"></a>level3</h1><p>首先尝试运行程序，发现是一个base64编码程序</p>
+<p>进行测试后看到程序中输出一个字符串 <code>Is there something wrong?</code></p>
+<p>推测这个base64可能不正确</p>
+<p>使用在线工具测试后发现大写字母出现错误</p>
+<p>查看base64_table字符串，发现没有问题，说明源代码中有对字符串进行操作的部分</p>
+<p>查看源代码，发现一个函数是 <code>O_OLootAtYou</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">9</span>; ++i ) &#123;</span><br><span class="line">    v0 = base64_table[i];</span><br><span class="line">    base64_table[i] = base64_table[<span class="number">19</span> - i];</span><br><span class="line">    result = <span class="number">19</span> - i;</span><br><span class="line">    base64_table[result] = v0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主函数中说有一个奇怪的字符串，显然是用错误的加密得到的结果</p>
+<p>对其进行更正后解密</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"><span class="built_in">str</span> = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;</span></span><br><span class="line">table = []</span><br><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> <span class="built_in">str</span>:</span><br><span class="line">    table.append(c)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    c = table[i]</span><br><span class="line">    table[i] = table[<span class="number">19</span> - i]</span><br><span class="line">    table[<span class="number">19</span> - i] = c</span><br><span class="line"></span><br><span class="line">crypto = <span class="string">&quot;d2G0ZjLwHjS7DmOzZAY0X2lzX3CoZV9zdNOydO9vZl9yZXZlcnGlfD==&quot;</span></span><br><span class="line">msg = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(crypto)):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">ord</span>(crypto[i]) &gt;= <span class="built_in">ord</span>(<span class="string">&#x27;A&#x27;</span>) <span class="keyword">and</span> <span class="built_in">ord</span>(crypto[i]) &lt;= <span class="built_in">ord</span>(<span class="string">&#x27;Z&#x27;</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">26</span>):</span><br><span class="line">            <span class="keyword">if</span> table[j] == crypto[i]:</span><br><span class="line">                msg += <span class="built_in">chr</span>(j + <span class="built_in">ord</span>(<span class="string">&#x27;A&#x27;</span>))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        msg += crypto[i]</span><br><span class="line"><span class="built_in">print</span> (msg)</span><br><span class="line"><span class="built_in">print</span> (base64.b64decode(msg))</span><br></pre></td></tr></table></figure>
+<p>运行得到flag为 <code>wctf2020&#123;Base64_is_the_start_of_reverse&#125;</code></p>
+<h1 id="level4"><a href="#level4" class="headerlink" title="level4"></a>level4</h1><p>运行一下程序，发现这道题和结构体有关</p>
+<p>拖入ida</p>
+<p>看到主函数中输出的是type1和type2函数的结果</p>
+<p>查看type1和type2</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( a1 ) &#123;</span><br><span class="line">    type1(*((_QWORD *)a1 + <span class="number">1</span>));</span><br><span class="line">    <span class="built_in">putchar</span>(*a1);</span><br><span class="line">    result = type1(*((_QWORD *)a1 + <span class="number">2</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( a1 ) &#123;</span><br><span class="line">    type2(*((_QWORD *)a1 + <span class="number">1</span>));</span><br><span class="line">    type2(*((_QWORD *)a1 + <span class="number">2</span>));</span><br><span class="line">    result = <span class="built_in">putchar</span>(*a1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>明显是二叉树的中序遍历和后序遍历</p>
+<p>反推出前序遍历，得到flag: <code>wctf2020&#123;This_IS_A_7reE&#125;</code></p>
+<h1 id="funnyre"><a href="#funnyre" class="headerlink" title="funnyre"></a>funnyre</h1><p>拖入ida后，通过start函数进入main</p>
+<p>发现main函数未定义，按p创建函数后F5，查看代码</p>
+<p>看到一串如下代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">v7 = <span class="number">0L</span>L;</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  *(_BYTE *)(v6 + v7++ + <span class="number">5</span>) ^= <span class="number">0x91</span>u;       <span class="comment">// 每一项异或0x91</span></span><br><span class="line"><span class="keyword">while</span> ( v7 != <span class="number">32</span> );</span><br></pre></td></tr></table></figure>
+<p>除此之外，还有一些错误代码标红</p>
+<p>以及JUMPOUT函数</p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">JUMPOUT(<span class="number">1</span>, (<span class="keyword">char</span> *)&amp;loc_400B81 + <span class="number">1</span>);</span><br><span class="line">JUMPOUT(<span class="number">0</span>, (<span class="keyword">char</span> *)&amp;loc_400B81 + <span class="number">1</span>);</span><br><span class="line">v89 = MEMORY[<span class="number">0xFFFFFFFF81003D16</span>](v6);</span><br><span class="line">JUMPOUT(v91, (<span class="keyword">char</span> *)&amp;loc_400B88 + <span class="number">2</span>);</span><br><span class="line">*(_DWORD *)((<span class="keyword">unsigned</span> <span class="keyword">int</span>)(v89 - <span class="number">1065138106</span>) - <span class="number">125L</span>L) += v92;</span><br><span class="line">*(_BYTE *)(a3 - <span class="number">15</span>) &amp;= BYTE1(v90);</span><br></pre></td></tr></table></figure>
+<p>经过学习后发现JUMPOUT函数是经典花指令，需要patch去除</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">.text:0000000000400607 loc_400607:                             ; CODE XREF: main+64↓j</span><br><span class="line">.text:0000000000400607                 xor     byte ptr [rdx+rax+5], 91h</span><br><span class="line">.text:000000000040060C                 add     rax, 1</span><br><span class="line">.text:0000000000400610                 cmp     rax, 20h</span><br><span class="line">.text:0000000000400614                 jnz     short loc_400607</span><br><span class="line">.text:0000000000400616                 jz      short near ptr loc_40061A+1</span><br><span class="line">.text:0000000000400618                 jnz     short near ptr loc_40061A+1</span><br><span class="line">.text:000000000040061A</span><br><span class="line">.text:000000000040061A loc_40061A:                             ; CODE XREF: main+66↑j</span><br><span class="line">.text:000000000040061A                                         ; main+68↑j</span><br><span class="line">.text:000000000040061A                 call    near ptr 0FFFFFFFF810037AFh</span><br><span class="line">.text:000000000040061F                 jz      short near ptr loc_400621+2</span><br><span class="line">.text:0000000000400621</span><br></pre></td></tr></table></figure>
+<p>发现40061A这个位置其实被跳过了</p>
+<p>将这个位置的数据变为90（即nop）</p>
+<p><img data-src="patch.png" alt="patch"></p>
+<p>按c将其转换回汇编代码</p>
+<p>得到正确代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">.text:0000000000400616                 jz      short loc_40061B</span><br><span class="line">.text:0000000000400618                 jnz     short loc_40061B</span><br><span class="line">.text:000000000040061A                 nop</span><br><span class="line">.text:000000000040061B</span><br><span class="line">.text:000000000040061B loc_40061B:                             ; CODE XREF: main+66↑j</span><br><span class="line">.text:000000000040061B                                         ; main+68↑j</span><br><span class="line">.text:000000000040061B                 nop</span><br><span class="line">.text:000000000040061C                 xor     eax, eax</span><br><span class="line">.text:000000000040061E</span><br><span class="line">.text:000000000040061E loc_40061E:                             ; CODE XREF: main+7B↓j</span><br><span class="line">.text:000000000040061E                 xor     byte ptr [rdx+rax+5], 0CDh</span><br><span class="line">.text:0000000000400623                 add     rax, 1</span><br><span class="line">.text:0000000000400627                 cmp     rax, 20h</span><br><span class="line">.text:000000000040062B                 jnz     short loc_40061E</span><br><span class="line">.text:000000000040062D                 xor     eax, eax</span><br><span class="line">.text:000000000040062F</span><br></pre></td></tr></table></figure>
+<p>在ida汇编模式中将后面几个标红的部分进行同样的修改，随后再F5即可查看到正确的代码</p>
+<p>找到函数结尾</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( <span class="built_in">memcmp</span>(v5 + <span class="number">5</span>, &amp;unk_4025C0, <span class="number">0x20</span>uLL) )</span><br><span class="line">      JUMPOUT(&amp;loc_4005BB);</span><br></pre></td></tr></table></figure>
+<p>发现unk字符串，将其进行如上函数的逆变换，即可得到最终结果</p>
+<p>我选择的方法是复制到vscode然后利用快捷键进行快速复制，最终得到答案</p>
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">res = [<span class="number">0xD9</span>, <span class="number">0x2C</span>, <span class="number">0x27</span>, <span class="number">0xD6</span>, <span class="number">0xD8</span>, <span class="number">0x2A</span>, <span class="number">0xDA</span>, <span class="number">0x2D</span>, <span class="number">0xD7</span>, <span class="number">0x2C</span>, <span class="number">0xDC</span>, <span class="number">0xE1</span>, <span class="number">0xDB</span>, <span class="number">0x2C</span>, <span class="number">0xD9</span>, <span class="number">0xDD</span>, <span class="number">0x27</span>, <span class="number">0x2D</span>, <span class="number">0x2A</span>, <span class="number">0xDC</span>, <span class="number">0xDB</span>, <span class="number">0x2C</span>, <span class="number">0xE1</span>, <span class="number">0x29</span>, <span class="number">0xDA</span>, <span class="number">0xDA</span>, <span class="number">0x2C</span>, <span class="number">0xDA</span>, <span class="number">0x2A</span>, <span class="number">0xD9</span>, <span class="number">0x29</span>, <span class="number">0x2A</span>]</span><br><span class="line">add = [<span class="number">80</span>, <span class="number">64</span>, <span class="number">79</span>, <span class="number">30</span>, <span class="number">91</span>, <span class="number">9</span>, <span class="number">5</span>, <span class="number">99</span>, <span class="number">87</span>, <span class="number">83</span>, <span class="number">59</span>, <span class="number">58</span>, <span class="number">1</span>, <span class="number">90</span>, <span class="number">57</span>, <span class="number">65</span>, <span class="number">53</span>, <span class="number">41</span>, <span class="number">85</span>, <span class="number">89</span>, <span class="number">44</span>, <span class="number">70</span>, <span class="number">12</span>, <span class="number">84</span>, <span class="number">10</span>, <span class="number">74</span>, <span class="number">17</span>, <span class="number">38</span>, <span class="number">43</span>, <span class="number">33</span>, <span class="number">11</span>, <span class="number">94</span>, <span class="number">86</span>, <span class="number">55</span>, <span class="number">32</span>, <span class="number">97</span>, <span class="number">68</span>, <span class="number">50</span>, <span class="number">67</span>, <span class="number">71</span>, <span class="number">96</span>, <span class="number">56</span>, <span class="number">6</span>, <span class="number">73</span>, <span class="number">52</span>, <span class="number">42</span>, <span class="number">61</span>, <span class="number">69</span>, <span class="number">14</span>, <span class="number">75</span>, <span class="number">4</span>, <span class="number">40</span>, <span class="number">37</span>, <span class="number">15</span>, <span class="number">77</span>, <span class="number">2</span>, <span class="number">23</span>, <span class="number">62</span>, <span class="number">29</span>, <span class="number">49</span>, <span class="number">47</span>, <span class="number">27</span>, <span class="number">66</span>, <span class="number">82</span>, <span class="number">46</span>, <span class="number">19</span>, <span class="number">88</span>, <span class="number">63</span>, <span class="number">39</span>, <span class="number">35</span>, <span class="number">25</span>, <span class="number">51</span>, <span class="number">18</span>, <span class="number">92</span>, <span class="number">95</span>, <span class="number">3</span>, <span class="number">72</span>, <span class="number">48</span>, <span class="number">36</span>, <span class="number">93</span>, <span class="number">76</span>, <span class="number">22</span>, <span class="number">98</span>, <span class="number">81</span>, <span class="number">13</span>, <span class="number">45</span>, <span class="number">34</span>, <span class="number">78</span>, <span class="number">26</span>, <span class="number">54</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">20</span>, <span class="number">16</span>, <span class="number">7</span>, <span class="number">24</span>, <span class="number">60</span>, <span class="number">21</span>, <span class="number">8</span>]</span><br><span class="line">xor1 = [<span class="number">0xF9</span>, <span class="number">0xA9</span>, <span class="number">0x4E</span>, <span class="number">0xD3</span>, <span class="number">0xC7</span>, <span class="number">0xE2</span>, <span class="number">0xD2</span>, <span class="number">0x33</span>, <span class="number">0xA8</span>, <span class="number">0x96</span>, <span class="number">0xBD</span>, <span class="number">0xC</span>, <span class="number">0x13</span>, <span class="number">0x2F</span>, <span class="number">0x73</span>, <span class="number">0x65</span>, <span class="number">0x9C</span>, <span class="number">0x12</span>, <span class="number">2</span>, <span class="number">0x32</span>, <span class="number">0x10</span>, <span class="number">0x84</span>, <span class="number">0xED</span>, <span class="number">0x95</span>, <span class="number">0x4D</span>, <span class="number">0x75</span>, <span class="number">0x2C</span>, <span class="number">0x5D</span>, <span class="number">0x39</span>, <span class="number">0x18</span>, <span class="number">0x4C</span>, <span class="number">0x49</span>, <span class="number">0x37</span>, <span class="number">0xF0</span>, <span class="number">0x99</span>, <span class="number">0x41</span>, <span class="number">0x86</span>, <span class="number">0x76</span>, <span class="number">0xF5</span>, <span class="number">5</span>, <span class="number">0xC8</span>, <span class="number">0x64</span>, <span class="number">0xFA</span>, <span class="number">0x50</span>, <span class="number">0x3B</span>, <span class="number">8</span>, <span class="number">0xE9</span>, <span class="number">0x23</span>, <span class="number">0xC3</span>, <span class="number">0x68</span>, <span class="number">0x67</span>, <span class="number">0xff</span>, <span class="number">0x7D</span>, <span class="number">0x9D</span>, <span class="number">0x1D</span>, <span class="number">0xDA</span>, <span class="number">0xD8</span>, <span class="number">0xEB</span>, <span class="number">0xF6</span>, <span class="number">0xE3</span>, <span class="number">0x98</span>, <span class="number">0xE1</span>, <span class="number">0x34</span>, <span class="number">0x82</span>, <span class="number">0x7F</span>, <span class="number">0xD5</span>, <span class="number">0xE7</span>, <span class="number">0xB8</span>, <span class="number">0xDC</span>, <span class="number">0x97</span>, <span class="number">0xA3</span>, <span class="number">7</span>, <span class="number">0xB6</span>, <span class="number">0xB</span>, <span class="number">0x14</span>, <span class="number">0xCE</span>, <span class="number">0x66</span>, <span class="number">0x62</span>, <span class="number">0xEF</span>]</span><br><span class="line"><span class="comment"># 中间有一个0xff，对应这取反的那个循环</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(res)):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> add:</span><br><span class="line">        res[i] -= j</span><br><span class="line">        res[i] %= <span class="number">256</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(res)):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> xor1:</span><br><span class="line">        res[i] ^= j</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(res)):</span><br><span class="line">    res[i] += <span class="number">128</span></span><br><span class="line">    res[i] %= <span class="number">256</span></span><br><span class="line"></span><br><span class="line">xor2 = [<span class="number">0x91</span>, <span class="number">0xCD</span>, <span class="number">0x6A</span>, <span class="number">0x59</span>, <span class="number">0xA</span>, <span class="number">0xF3</span>, <span class="number">0xCA</span>, <span class="number">0x3E</span>, <span class="number">0x6C</span>, <span class="number">0x4F</span>, <span class="number">0x24</span>, <span class="number">0x83</span>, <span class="number">0xC4</span>, <span class="number">0x53</span>, <span class="number">4</span>, <span class="number">0x9E</span>, <span class="number">0x42</span>, <span class="number">0xE</span>, <span class="number">0x8D</span>, <span class="number">0x38</span>, <span class="number">0x7A</span>, <span class="number">0xDD</span>, <span class="number">0x52</span>, <span class="number">0x1B</span>, <span class="number">0xAA</span>, <span class="number">0xAE</span>, <span class="number">0xF8</span>, <span class="number">0x58</span>, <span class="number">0xF2</span>, <span class="number">0x9F</span>, <span class="number">0x3C</span>, <span class="number">0xA1</span>, <span class="number">6</span>, <span class="number">0x78</span>, <span class="number">0x70</span>, <span class="number">0x28</span>, <span class="number">0xEA</span>, <span class="number">0x48</span>, <span class="number">0xE4</span>, <span class="number">0x6E</span>, <span class="number">0x40</span>, <span class="number">0x89</span>, <span class="number">0x16</span>, <span class="number">0xD7</span>, <span class="number">0xB5</span>, <span class="number">0xD</span>, <span class="number">0x17</span>, <span class="number">0x5A</span>, <span class="number">0xB1</span>, <span class="number">0x69</span>, <span class="number">0x5C</span>, <span class="number">0x21</span>, <span class="number">0xE5</span>, <span class="number">0x7E</span>, <span class="number">0x2A</span>, <span class="number">0x94</span>, <span class="number">0xBC</span>, <span class="number">1</span>, <span class="number">0x74</span>, <span class="number">0x57</span>, <span class="number">0x6D</span>, <span class="number">0x1E</span>, <span class="number">0xA2</span>, <span class="number">0x6B</span>, <span class="number">0x22</span>, <span class="number">0xC2</span>, <span class="number">0x3D</span>, <span class="number">0x44</span>, <span class="number">0x90</span>, <span class="number">0x8C</span>, <span class="number">0xB3</span>, <span class="number">0xA6</span>, <span class="number">0x79</span>, <span class="number">0x61</span>, <span class="number">0xD9</span>, <span class="number">0x5B</span>, <span class="number">0x1A</span>, <span class="number">0x43</span>, <span class="number">0x8F</span>, <span class="number">0xA5</span>, <span class="number">0xEE</span>, <span class="number">0x25</span>, <span class="number">0x46</span>, <span class="number">0xE6</span>, <span class="number">0x88</span>, <span class="number">0x20</span>, <span class="number">0x71</span>, <span class="number">0xE8</span>, <span class="number">9</span>, <span class="number">0x8A</span>, <span class="number">0x7B</span>, <span class="number">0xB4</span>, <span class="number">0x19</span>, <span class="number">0x15</span>, <span class="number">0x4A</span>, <span class="number">0x47</span>, <span class="number">0xDB</span>, <span class="number">0x72</span>, <span class="number">0x5F</span>, <span class="number">0x26</span>, <span class="number">0xA7</span>, <span class="number">0x8B</span>, <span class="number">0xBA</span>, <span class="number">0xBF</span>, <span class="number">0x87</span>, <span class="number">0x36</span>, <span class="number">0x3F</span>, <span class="number">0xFE</span>, <span class="number">0x77</span>, <span class="number">0x1C</span>, <span class="number">0x81</span>, <span class="number">0x11</span>, <span class="number">0x2E</span>, <span class="number">0x7C</span>, <span class="number">0x63</span>, <span class="number">0x45</span>, <span class="number">0xF4</span>, <span class="number">0x56</span>, <span class="number">0xF1</span>, <span class="number">0xB0</span>, <span class="number">0xD1</span>, <span class="number">0xE0</span>, <span class="number">0xF</span>, <span class="number">0x93</span>, <span class="number">0xD6</span>, <span class="number">0x1F</span>, <span class="number">0xCC</span>, <span class="number">0x4B</span>, <span class="number">0xCF</span>, <span class="number">0xDF</span>, <span class="number">0x55</span>, <span class="number">0xB9</span>, <span class="number">0x2B</span>, <span class="number">0x85</span>, <span class="number">0x31</span>, <span class="number">0x29</span>, <span class="number">0xFD</span>, <span class="number">0x3A</span>, <span class="number">0x5E</span>, <span class="number">0xDE</span>, <span class="number">3</span>, <span class="number">0xC6</span>, <span class="number">0xC1</span>, <span class="number">0xC5</span>, <span class="number">0x54</span>, <span class="number">0xBB</span>, <span class="number">0xFC</span>, <span class="number">0xBE</span>, <span class="number">0xEC</span>, <span class="number">0xC0</span>, <span class="number">0xAD</span>, <span class="number">0xA4</span>, <span class="number">0xD0</span>, <span class="number">0x35</span>, <span class="number">0xB7</span>, <span class="number">0x51</span>, <span class="number">0xAB</span>, <span class="number">0x2D</span>, <span class="number">0xAF</span>, <span class="number">0x92</span>, <span class="number">0x60</span>, <span class="number">0xAC</span>, <span class="number">0x30</span>, <span class="number">0xD4</span>, <span class="number">0xCB</span>, <span class="number">0x9B</span>, <span class="number">0x9A</span>, <span class="number">0xFB</span>, <span class="number">0x6F</span>, <span class="number">0xF7</span>, <span class="number">0x8E</span>, <span class="number">0xA0</span>, <span class="number">0x27</span>, <span class="number">0xC9</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(res)):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> xor2:</span><br><span class="line">        res[i] ^= j</span><br><span class="line">    print(<span class="built_in">chr</span>(res[i]), end=<span class="string">&#x27;&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span> ()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>得到 flag: <code>1dc20f6e3d497d15cef47d9a66d6f1af</code></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+              <a href="/tags/Reverse/" rel="tag"># Reverse</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/04/MRCTF2020-reverse-writeups/" rel="prev" title="MRCTF2020 reverse writeups">
+      <i class="fa fa-chevron-left"></i> MRCTF2020 reverse writeups
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Crossfun"><span class="nav-number">1.</span> <span class="nav-text">Crossfun</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#level1"><span class="nav-number">2.</span> <span class="nav-text">level1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#level2"><span class="nav-number">3.</span> <span class="nav-text">level2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#level3"><span class="nav-number">4.</span> <span class="nav-text">level3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#level4"><span class="nav-number">5.</span> <span class="nav-text">level4</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#funnyre"><span class="nav-number">6.</span> <span class="nav-text">funnyre</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="s0uthwood"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">s0uthwood</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">s0uthwood</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">126k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:55</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
