@@ -25,7 +25,7 @@
 <p>后经大佬提醒发现这道题用的是Goldwasser-Micali密码（上课走神实锤了）。简单对比发现，当GM密码选取的x满足<code>J(x, p) = 1</code>且<code>J(x, q) = -1</code>时，可能能够利用本题的方法进行破解。因此选取的x不能仅满足是n的二次非剩余，需要同时是p和q的二次非剩余。</p>
 ]]></content>
       <tags>
-        <tag>crypto</tag>
+        <tag>Crypto</tag>
       </tags>
   </entry>
   <entry>
@@ -306,7 +306,7 @@
 <p>听说是<em>paillier</em>加密，果然不是RSA</p>
 ]]></content>
       <tags>
-        <tag>crypto</tag>
+        <tag>Crypto</tag>
       </tags>
   </entry>
   <entry>
@@ -675,7 +675,7 @@
 <h1 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h1><p>flag{Congratulation!_quiz1_passed!!!}</p>
 ]]></content>
       <tags>
-        <tag>crypto</tag>
+        <tag>Crypto</tag>
       </tags>
   </entry>
   <entry>
@@ -818,8 +818,8 @@
 </blockquote>
 ]]></content>
       <tags>
-        <tag>crypto</tag>
         <tag>fabric</tag>
+        <tag>Crypto</tag>
       </tags>
   </entry>
   <entry>
