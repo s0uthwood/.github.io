@@ -417,83 +417,89 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">\because</td>
+<td style="text-align:center"><code>\because</code></td>
 <td style="text-align:center">$\because$</td>
-<td style="text-align:center">\therefore</td>
+<td style="text-align:center"><code>\therefore</code></td>
 <td style="text-align:center">$\therefore$</td>
 </tr>
 <tr>
-<td style="text-align:center">\frac{a}{b}</td>
+<td style="text-align:center"><code>\frac&#123;a&#125;&#123;b&#125;</code></td>
 <td style="text-align:center">$\frac{a}{b}$</td>
-<td style="text-align:center">\dfrac{a}{b}</td>
+<td style="text-align:center"><code>\dfrac&#123;a&#125;&#123;b&#125;</code></td>
 <td style="text-align:center">$\dfrac{a}{b}$</td>
 </tr>
 <tr>
-<td style="text-align:center">\cdot</td>
+<td style="text-align:center"><code>\cdot</code></td>
 <td style="text-align:center">$\cdot$</td>
-<td style="text-align:center">\cdots</td>
+<td style="text-align:center"><code>\cdots</code></td>
 <td style="text-align:center">$\cdots$</td>
 </tr>
 <tr>
-<td style="text-align:center">\ldots</td>
+<td style="text-align:center"><code>\ldots</code></td>
 <td style="text-align:center">$\ldots$</td>
-<td style="text-align:center">\infty</td>
+<td style="text-align:center"><code>\infty</code></td>
 <td style="text-align:center">$\infty$</td>
 </tr>
 <tr>
-<td style="text-align:center">\log</td>
+<td style="text-align:center"><code>\log</code></td>
 <td style="text-align:center">$\log$</td>
-<td style="text-align:center">\lim</td>
+<td style="text-align:center"><code>\lim</code></td>
 <td style="text-align:center">$\lim$</td>
 </tr>
 <tr>
-<td style="text-align:center">\sin</td>
+<td style="text-align:center"><code>\sin</code></td>
 <td style="text-align:center">$\sin$</td>
-<td style="text-align:center">\cos</td>
+<td style="text-align:center"><code>\cos</code></td>
 <td style="text-align:center">$\cos$</td>
 </tr>
 <tr>
-<td style="text-align:center">\rightarrow</td>
+<td style="text-align:center"><code>\rightarrow</code></td>
 <td style="text-align:center">$\rightarrow$</td>
-<td style="text-align:center">\int_{0}^{1}</td>
+<td style="text-align:center"><code>\int_&#123;0&#125;^&#123;1&#125;</code></td>
 <td style="text-align:center">$\int_{0}^{1}$</td>
 </tr>
 <tr>
-<td style="text-align:center">\iint</td>
+<td style="text-align:center"><code>\iint</code></td>
 <td style="text-align:center">$\iint$</td>
-<td style="text-align:center">\oint</td>
+<td style="text-align:center"><code>\oint</code></td>
 <td style="text-align:center">$\oint$</td>
 </tr>
 <tr>
-<td style="text-align:center">\oiint</td>
+<td style="text-align:center"><code>\oiint</code></td>
 <td style="text-align:center">$\oiint$</td>
-<td style="text-align:center">\iiint</td>
+<td style="text-align:center"><code>\iiint</code></td>
 <td style="text-align:center">$\iiint$</td>
 </tr>
 <tr>
-<td style="text-align:center">\in</td>
+<td style="text-align:center"><code>\in</code></td>
 <td style="text-align:center">$\in$</td>
-<td style="text-align:center">\notin</td>
+<td style="text-align:center"><code>\notin</code></td>
 <td style="text-align:center">$\notin$</td>
 </tr>
 <tr>
-<td style="text-align:center">\forall</td>
+<td style="text-align:center"><code>\forall</code></td>
 <td style="text-align:center">$\forall$</td>
-<td style="text-align:center">\exist</td>
+<td style="text-align:center"><code>\exist</code></td>
 <td style="text-align:center">$\exist$</td>
 </tr>
 <tr>
-<td style="text-align:center">\sqrt{a}</td>
+<td style="text-align:center"><code>\sqrt&#123;a&#125;</code></td>
 <td style="text-align:center">$\sqrt{a}$</td>
-<td style="text-align:center">\exist</td>
+<td style="text-align:center"><code>\exist</code></td>
 <td style="text-align:center">$\exist$</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\neg</code></td>
+<td style="text-align:center">$\neg$</td>
+<td style="text-align:center"><code>\oplus</code></td>
+<td style="text-align:center">$\oplus$</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>\sum\limits_{i=1}^{10}:  $\sum\limits_{i=1}^{10}$ </p>
-<p>\prod\limits_{i=1}^{10}: $\prod\limits_{i=1}^{10}$</p>
-<p>\lim\limits_{i\rightarrow+\infty}: $\lim\limits_{i\rightarrow+\infty}$</p>
+<p><code>\sum\limits\_&#123;i=1&#125;^&#123;10&#125;</code>:  $\sum\limits_{i=1}^{10}$ </p>
+<p><code>\prod\limits\_&#123;i=1&#125;^&#123;10&#125;</code>: $\prod\limits_{i=1}^{10}$</p>
+<p><code>\lim\limits\_&#123;i\rightarrow+\infty&#125;</code>: $\lim\limits_{i\rightarrow+\infty}$</p>
 <h2 id="希腊字母"><a href="#希腊字母" class="headerlink" title="希腊字母"></a>希腊字母</h2><div class="table-container">
 <table>
 <thead>
@@ -506,39 +512,39 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">\alpha</td>
+<td style="text-align:center"><code>\alpha</code></td>
 <td style="text-align:center">$\alpha$</td>
-<td style="text-align:center">\varepsilon</td>
+<td style="text-align:center"><code>\varepsilon</code></td>
 <td style="text-align:center">$\varepsilon$</td>
 </tr>
 <tr>
-<td style="text-align:center">\delta</td>
+<td style="text-align:center"><code>\delta</code></td>
 <td style="text-align:center">$\delta$</td>
-<td style="text-align:center">\pi</td>
+<td style="text-align:center"><code>\pi</code></td>
 <td style="text-align:center">$\pi$</td>
 </tr>
 <tr>
-<td style="text-align:center">\rho</td>
+<td style="text-align:center"><code>\rho</code></td>
 <td style="text-align:center">$\rho$</td>
-<td style="text-align:center">\lambda</td>
+<td style="text-align:center"><code>\lambda</code></td>
 <td style="text-align:center">$\lambda$</td>
 </tr>
 <tr>
-<td style="text-align:center">\varphi</td>
+<td style="text-align:center"><code>\varphi</code></td>
 <td style="text-align:center">$\varphi$</td>
-<td style="text-align:center">\mu</td>
+<td style="text-align:center"><code>\mu</code></td>
 <td style="text-align:center">$\mu$</td>
 </tr>
 <tr>
-<td style="text-align:center">\Delta</td>
+<td style="text-align:center"><code>\Delta</code></td>
 <td style="text-align:center">$\Delta$</td>
-<td style="text-align:center">\Sigma</td>
+<td style="text-align:center"><code>\Sigma</code></td>
 <td style="text-align:center">$\Sigma$</td>
 </tr>
 <tr>
-<td style="text-align:center">\Pi</td>
+<td style="text-align:center"><code>\Pi</code></td>
 <td style="text-align:center">$\Pi$</td>
-<td style="text-align:center">\theta</td>
+<td style="text-align:center"><code>\theta</code></td>
 <td style="text-align:center">$\theta$</td>
 </tr>
 </tbody>
@@ -556,45 +562,45 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">\equiv</td>
+<td style="text-align:center"><code>\equiv</code></td>
 <td style="text-align:center">$\equiv$</td>
-<td style="text-align:center">\neq</td>
+<td style="text-align:center"><code>\neq</code></td>
 <td style="text-align:center">$\neq$</td>
 </tr>
 <tr>
-<td style="text-align:center">\leqslant</td>
+<td style="text-align:center"><code>\leqslant</code></td>
 <td style="text-align:center">$\leqslant$</td>
-<td style="text-align:center">\geqslant</td>
+<td style="text-align:center"><code>\geqslant</code></td>
 <td style="text-align:center">$\geqslant$</td>
 </tr>
 <tr>
-<td style="text-align:center">\sim</td>
+<td style="text-align:center"><code>\sim</code></td>
 <td style="text-align:center">$\sim$</td>
-<td style="text-align:center">\approx</td>
+<td style="text-align:center"><code>\approx</code></td>
 <td style="text-align:center">$\approx$</td>
 </tr>
 <tr>
-<td style="text-align:center">\mid</td>
+<td style="text-align:center"><code>\mid</code></td>
 <td style="text-align:center">$\mid$</td>
-<td style="text-align:center">\nmid</td>
+<td style="text-align:center"><code>\nmid</code></td>
 <td style="text-align:center">$\nmid$</td>
 </tr>
 <tr>
-<td style="text-align:center">\pm</td>
+<td style="text-align:center"><code>\pm</code></td>
 <td style="text-align:center">$\pm$</td>
-<td style="text-align:center">\times</td>
+<td style="text-align:center"><code>\times</code></td>
 <td style="text-align:center">$\times$</td>
 </tr>
 <tr>
-<td style="text-align:center">\cup</td>
+<td style="text-align:center"><code>\cup</code></td>
 <td style="text-align:center">$\cup$</td>
-<td style="text-align:center">\cap</td>
+<td style="text-align:center"><code>\cap</code></td>
 <td style="text-align:center">$\cap$</td>
 </tr>
 <tr>
-<td style="text-align:center">\subset</td>
+<td style="text-align:center"><code>\subset</code></td>
 <td style="text-align:center">$\subset$</td>
-<td style="text-align:center">\supset</td>
+<td style="text-align:center"><code>\supset</code></td>
 <td style="text-align:center">$\supset$</td>
 </tr>
 </tbody>
@@ -612,31 +618,31 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">\left( \right)</td>
+<td style="text-align:center"><code>\left( \right)</code></td>
 <td style="text-align:center">$\left(\right)$</td>
-<td style="text-align:center">\left[ \right]</td>
+<td style="text-align:center"><code>\left[ \right]</code></td>
 <td style="text-align:center">$\left[\right]$</td>
 </tr>
 <tr>
-<td style="text-align:center">\left\\{ \right\\}</td>
+<td style="text-align:center"><code>\left\\&#123; \right\\&#125;</code></td>
 <td style="text-align:center">$\left\{\right\}$</td>
-<td style="text-align:center">\left\lbrace \right\rbrace</td>
+<td style="text-align:center"><code>\left\lbrace \right\rbrace</code></td>
 <td style="text-align:center">$\left\lbrace\right\rbrace$</td>
 </tr>
 <tr>
-<td style="text-align:center">\left&lt; \right&gt;</td>
+<td style="text-align:center"><code>\left&lt; \right&gt;</code></td>
 <td style="text-align:center">$\left&lt;\right&gt;$</td>
-<td style="text-align:center">\left) \right(</td>
+<td style="text-align:center"><code>\left) \right(</code></td>
 <td style="text-align:center">$\left) \right($</td>
 </tr>
 <tr>
-<td style="text-align:center">\left&#124; \right&#124;</td>
+<td style="text-align:center"><code>\left&amp;#124; \right&amp;#124;</code></td>
 <td style="text-align:center">$\left&#124;\right&#124;$</td>
-<td style="text-align:center">\left\\&#124; \right\\\&#124;</td>
+<td style="text-align:center"><code>\left\\&amp;#124; \right\\\&amp;#124;</code></td>
 <td style="text-align:center">$\left\&#124; \right\&#124;$</td>
 </tr>
 <tr>
-<td style="text-align:center">\left\{ \right.</td>
+<td style="text-align:center"><code>\left\&#123; \right.</code></td>
 <td style="text-align:center">$\left\{ \right.$</td>
 <td style="text-align:center"></td>
 </tr>
