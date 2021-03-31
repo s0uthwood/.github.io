@@ -20,28 +20,34 @@
     var CONFIG = {"hostname":"s0uthwood.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="s0uthwood&#39;s Blog">
-<meta property="og:url" content="https://s0uthwood.github.io/index.html">
+  <meta name="description" content="cycle graph逆向代码根据提示，这是一道纯算法题，拖到 ida 中，根据关键字符串定位到关键函数。查看核心代码 123456789101112131415dword_403370 &#x3D; 0;v1 &#x3D; &amp;unk_403384;byte_403374 &#x3D; 48;v2 &#x3D; 0;dword_403378 &#x3D; (int)&amp;unk_403380;do&amp;#123;  v3 &#x3D; dword_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高校战役 re 前两题 writeups">
+<meta property="og:url" content="https://s0uthwood.github.io/2021/03/31/%E9%AB%98%E6%A0%A1%E6%88%98%E5%BD%B9-re-%E5%89%8D%E4%B8%A4%E9%A2%98-writeups/index.html">
 <meta property="og:site_name" content="s0uthwood&#39;s Blog">
+<meta property="og:description" content="cycle graph逆向代码根据提示，这是一道纯算法题，拖到 ida 中，根据关键字符串定位到关键函数。查看核心代码 123456789101112131415dword_403370 &#x3D; 0;v1 &#x3D; &amp;unk_403384;byte_403374 &#x3D; 48;v2 &#x3D; 0;dword_403378 &#x3D; (int)&amp;unk_403380;do&amp;#123;  v3 &#x3D; dword_">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-31T12:33:02.000Z">
+<meta property="article:modified_time" content="2021-03-31T12:36:40.189Z">
 <meta property="article:author" content="s0uthwood">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="Reverse">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://s0uthwood.github.io/">
+<link rel="canonical" href="https://s0uthwood.github.io/2021/03/31/%E9%AB%98%E6%A0%A1%E6%88%98%E5%BD%B9-re-%E5%89%8D%E4%B8%A4%E9%A2%98-writeups/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>s0uthwood's Blog</title>
+  <title>高校战役 re 前两题 writeups | s0uthwood's Blog</title>
   
 
 
@@ -175,9 +181,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -193,10 +200,9 @@
       <meta itemprop="name" content="s0uthwood's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/31/%E9%AB%98%E6%A0%A1%E6%88%98%E5%BD%B9-re-%E5%89%8D%E4%B8%A4%E9%A2%98-writeups/" class="post-title-link" itemprop="url">高校战役 re 前两题 writeups</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          高校战役 re 前两题 writeups
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -234,7 +240,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="cycle-graph"><a href="#cycle-graph" class="headerlink" title="cycle graph"></a>cycle graph</h1><h2 id="逆向代码"><a href="#逆向代码" class="headerlink" title="逆向代码"></a>逆向代码</h2><p>根据提示，这是一道纯算法题，拖到 ida 中，根据关键字符串定位到关键函数。查看核心代码</p>
+        <h1 id="cycle-graph"><a href="#cycle-graph" class="headerlink" title="cycle graph"></a>cycle graph</h1><h2 id="逆向代码"><a href="#逆向代码" class="headerlink" title="逆向代码"></a>逆向代码</h2><p>根据提示，这是一道纯算法题，拖到 ida 中，根据关键字符串定位到关键函数。查看核心代码</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">dword_403370 = <span class="number">0</span>;</span><br><span class="line">v1 = &amp;unk_403384;</span><br><span class="line">byte_403374 = <span class="number">48</span>;</span><br><span class="line">v2 = <span class="number">0</span>;</span><br><span class="line">dword_403378 = (<span class="keyword">int</span>)&amp;unk_403380;</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">&#123;</span><br><span class="line">  v3 = dword_402178[v2];</span><br><span class="line">  ++v2;</span><br><span class="line">  *(v1 - <span class="number">1</span>) = v3;</span><br><span class="line">  *v1 = (<span class="keyword">char</span> *)&amp;unk_403380 + <span class="number">12</span> * dword_402274[v2];</span><br><span class="line">  v1[<span class="number">1</span>] = (<span class="keyword">char</span> *)&amp;unk_403380 + <span class="number">12</span> * dword_4021F4[v2];</span><br><span class="line">  v1 += <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> ( (<span class="keyword">signed</span> <span class="keyword">int</span>)v1 &lt; (<span class="keyword">signed</span> <span class="keyword">int</span>)&amp;unk_403504 );</span><br></pre></td></tr></table></figure>
 <p>上面的代码是主函数开头的初始化部分</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">sub_401020(<span class="string">&quot;You need a flag to get out of this:\n&quot;</span>, a1);</span><br><span class="line">scan(<span class="string">&quot;%s&quot;</span>, &amp;input);</span><br><span class="line">v4 = dword_403370;                            <span class="comment">// 0</span></span><br><span class="line">v5 = byte_403374;                             <span class="comment">// 48</span></span><br><span class="line">v6 = <span class="number">5</span>;</span><br><span class="line">v7 = dword_403378;</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">&#123;</span><br><span class="line">  v11 = *(&amp;input + v6);</span><br><span class="line">  <span class="keyword">if</span> ( *(_DWORD *)v7 + v5 == v11 )</span><br><span class="line">  &#123;</span><br><span class="line">    v7 = *(_DWORD *)(v7 + <span class="number">4</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( v5 - *(_DWORD *)v7 != v11 )</span><br><span class="line">    &#123;</span><br><span class="line">      sub_401020(<span class="string">&quot;This is not flag~\n&quot;</span>, v10);</span><br><span class="line">      system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    v7 = *(_DWORD *)(v7 + <span class="number">8</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  v5 = *(&amp;input + v6);</span><br><span class="line">  ++v4;</span><br><span class="line">  ++v6;</span><br><span class="line">  byte_403374 = v5;</span><br><span class="line">  dword_403378 = v7;</span><br><span class="line">  dword_403370 = v4;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> ( v6 &lt; <span class="number">21</span> );</span><br></pre></td></tr></table></figure>
@@ -294,777 +300,35 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input the flag to hijack the ability of Hiden Intelligence:flag&#123;Thousandriver_is_1000%_stronger_than_zero-one&#125;</span><br><span class="line">Progrise Key confirmed. Ready to break.</span><br><span class="line">Jacking Break! Zaia Enterprise.</span><br></pre></td></tr></table></figure>
 <p>说明我们破解成功了！</p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+              <a href="/tags/Reverse/" rel="tag"># Reverse</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/03/25/VNCTF2021-re-FilpGame/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="s0uthwood">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="s0uthwood's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/25/VNCTF2021-re-FilpGame/" class="post-title-link" itemprop="url">VNCTF2021 re FilpGame</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-03-25 03:06:10 / 修改时间：03:12:02" itemprop="dateCreated datePublished" datetime="2021-03-25T03:06:10+08:00">2021-03-25</time>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>4.8k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>V&amp;NCTF2021 补题第二篇</p>
-<p>官方WP写的好玄学，其实用z3也可以解的</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/25/VNCTF2021-re-FilpGame/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/03/22/NepCTF2021-re-writeups/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="s0uthwood">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="s0uthwood's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/22/NepCTF2021-re-writeups/" class="post-title-link" itemprop="url">NepCTF2021 re writeups</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-03-22 18:30:03 / 修改时间：18:30:11" itemprop="dateCreated datePublished" datetime="2021-03-22T18:30:03+08:00">2021-03-22</time>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>17k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>16 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>NepCTF2021 reverse 前四题</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/22/NepCTF2021-re-writeups/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/25/VNCTF2021-re-FilpGame/" rel="prev" title="VNCTF2021 re FilpGame">
+      <i class="fa fa-chevron-left"></i> VNCTF2021 re FilpGame
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
   
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/03/17/HGAME2021-week1-crypto-%E5%AF%B9%E7%A7%B0%E4%B9%8B%E7%BE%8E/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="s0uthwood">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="s0uthwood's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/17/HGAME2021-week1-crypto-%E5%AF%B9%E7%A7%B0%E4%B9%8B%E7%BE%8E/" class="post-title-link" itemprop="url">HGAME2021 week1 crypto 对称之美</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-17 20:06:09" itemprop="dateCreated datePublished" datetime="2021-03-17T20:06:09+08:00">2021-03-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-24 17:50:22" itemprop="dateModified" datetime="2021-03-24T17:50:22+08:00">2021-03-24</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>11k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>密码学实验正好做到弗纳姆密码，发现寒假时做到过，因此记录一下</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/17/HGAME2021-week1-crypto-%E5%AF%B9%E7%A7%B0%E4%B9%8B%E7%BE%8E/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/03/16/VNCTF2021-re-notsudoku/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="s0uthwood">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="s0uthwood's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/16/VNCTF2021-re-notsudoku/" class="post-title-link" itemprop="url">V&NCTF2021 re notsudoku</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-03-16 22:15:03 / 修改时间：22:23:48" itemprop="dateCreated datePublished" datetime="2021-03-16T22:15:03+08:00">2021-03-16</time>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>4.4k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>V&amp;NCTF2021补题 第一篇</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/16/VNCTF2021-re-notsudoku/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/03/07/WUSTCTF2020-re-writeups/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="s0uthwood">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="s0uthwood's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/07/WUSTCTF2020-re-writeups/" class="post-title-link" itemprop="url">WUSTCTF2020 re writeups</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-07 21:35:10" itemprop="dateCreated datePublished" datetime="2021-03-07T21:35:10+08:00">2021-03-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-14 00:54:35" itemprop="dateModified" datetime="2021-03-14T00:54:35+08:00">2021-03-14</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>6.2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>6 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>平台：BUUOJ</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/07/WUSTCTF2020-re-writeups/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/03/04/MRCTF2020-reverse-writeups/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="s0uthwood">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="s0uthwood's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/04/MRCTF2020-reverse-writeups/" class="post-title-link" itemprop="url">MRCTF2020 reverse writeups</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-04 16:38:52" itemprop="dateCreated datePublished" datetime="2021-03-04T16:38:52+08:00">2021-03-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-14 00:54:08" itemprop="dateModified" datetime="2021-03-14T00:54:08+08:00">2021-03-14</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>平台：BUUOJ</p>
-<p>做题的时候懒了，没写思路，暂时先贴上代码吧</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/04/MRCTF2020-reverse-writeups/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/03/04/GUETCTF2019-reverse-writeups/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="s0uthwood">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="s0uthwood's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/04/GUETCTF2019-reverse-writeups/" class="post-title-link" itemprop="url">GUETCTF2019 re writeups</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-04 16:17:36" itemprop="dateCreated datePublished" datetime="2021-03-04T16:17:36+08:00">2021-03-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-14 01:00:53" itemprop="dateModified" datetime="2021-03-14T01:00:53+08:00">2021-03-14</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>12k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>11 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>平台：BUUOJ</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/04/GUETCTF2019-reverse-writeups/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/02/28/HGAME2021-week3-FAKE-writeup/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="s0uthwood">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="s0uthwood's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/28/HGAME2021-week3-FAKE-writeup/" class="post-title-link" itemprop="url">HGAME2021 week3 FAKE writeup</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-02-28 15:31:36" itemprop="dateCreated datePublished" datetime="2021-02-28T15:31:36+08:00">2021-02-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-14 00:53:07" itemprop="dateModified" datetime="2021-03-14T00:53:07+08:00">2021-03-14</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>25k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>23 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>from HGAME2021</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/02/28/HGAME2021-week3-FAKE-writeup/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/01/15/Reverse%E5%85%A5%E9%97%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="s0uthwood">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="s0uthwood's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/15/Reverse%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">Reverse入门</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-01-15 18:29:48 / 修改时间：18:45:55" itemprop="dateCreated datePublished" datetime="2021-01-15T18:29:48+08:00">2021-01-15</time>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>4.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>几道BUUCTF上的Reverse入门题题解</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/01/15/Reverse%E5%85%A5%E9%97%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
@@ -1116,6 +380,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#cycle-graph"><span class="nav-number">1.</span> <span class="nav-text">cycle graph</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%86%E5%90%91%E4%BB%A3%E7%A0%81"><span class="nav-number">1.1.</span> <span class="nav-text">逆向代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95"><span class="nav-number">1.2.</span> <span class="nav-text">动态调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E6%B1%82%E8%A7%A3"><span class="nav-number">1.3.</span> <span class="nav-text">脚本求解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A9%E6%B4%A5%E5%9E%93"><span class="nav-number">2.</span> <span class="nav-text">天津垓</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%8F%8D%E8%B0%83%E8%AF%95"><span class="nav-number">2.1.</span> <span class="nav-text">反反调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-Authorize"><span class="nav-number">2.2.</span> <span class="nav-text">破解 Authorize</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#patch-SMC"><span class="nav-number">2.3.</span> <span class="nav-text">patch SMC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%95%E4%B8%80%EF%BC%88patch-%E6%96%B9%E6%B3%95%E5%90%8C-HGAME-FAKE%EF%BC%89"><span class="nav-number">2.3.1.</span> <span class="nav-text">法一（patch  方法同 HGAME FAKE）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%95%E4%BA%8C%EF%BC%88-idapython-%E8%87%AA%E5%8A%A8-patch%EF%BC%89"><span class="nav-number">2.3.2.</span> <span class="nav-text">法二（ idapython 自动 patch）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hijack"><span class="nav-number">2.4.</span> <span class="nav-text">hijack</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
