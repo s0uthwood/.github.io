@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"s0uthwood.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="cycle graph逆向代码根据提示，这是一道纯算法题，拖到 ida 中，根据关键字符串定位到关键函数。查看核心代码 123456789101112131415dword_403370 &#x3D; 0;v1 &#x3D; &amp;unk_403384;byte_403374 &#x3D; 48;v2 &#x3D; 0;dword_403378 &#x3D; (int)&amp;unk_403380;do&amp;#123;  v3 &#x3D; dword_">
+  <meta name="description" content="被学长安利的比赛">
 <meta property="og:type" content="article">
 <meta property="og:title" content="高校战役 re 前两题 writeups">
 <meta property="og:url" content="https://s0uthwood.github.io/2021/03/31/%E9%AB%98%E6%A0%A1%E6%88%98%E5%BD%B9-re-%E5%89%8D%E4%B8%A4%E9%A2%98-writeups/index.html">
 <meta property="og:site_name" content="s0uthwood&#39;s Blog">
-<meta property="og:description" content="cycle graph逆向代码根据提示，这是一道纯算法题，拖到 ida 中，根据关键字符串定位到关键函数。查看核心代码 123456789101112131415dword_403370 &#x3D; 0;v1 &#x3D; &amp;unk_403384;byte_403374 &#x3D; 48;v2 &#x3D; 0;dword_403378 &#x3D; (int)&amp;unk_403380;do&amp;#123;  v3 &#x3D; dword_">
+<meta property="og:description" content="被学长安利的比赛">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-31T12:33:02.000Z">
-<meta property="article:modified_time" content="2021-03-31T12:36:40.189Z">
+<meta property="article:modified_time" content="2021-03-31T12:41:15.625Z">
 <meta property="article:author" content="s0uthwood">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="Reverse">
@@ -212,7 +212,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-03-31 20:33:02 / 修改时间：20:36:40" itemprop="dateCreated datePublished" datetime="2021-03-31T20:33:02+08:00">2021-03-31</time>
+              <time title="创建时间：2021-03-31 20:33:02 / 修改时间：20:41:15" itemprop="dateCreated datePublished" datetime="2021-03-31T20:33:02+08:00">2021-03-31</time>
             </span>
 
           <br>
@@ -240,7 +240,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="cycle-graph"><a href="#cycle-graph" class="headerlink" title="cycle graph"></a>cycle graph</h1><h2 id="逆向代码"><a href="#逆向代码" class="headerlink" title="逆向代码"></a>逆向代码</h2><p>根据提示，这是一道纯算法题，拖到 ida 中，根据关键字符串定位到关键函数。查看核心代码</p>
+        <p>被学长安利的比赛</p>
+<a id="more"></a>
+<h1 id="cycle-graph"><a href="#cycle-graph" class="headerlink" title="cycle graph"></a>cycle graph</h1><h2 id="逆向代码"><a href="#逆向代码" class="headerlink" title="逆向代码"></a>逆向代码</h2><p>根据提示，这是一道纯算法题，拖到 ida 中，根据关键字符串定位到关键函数。查看核心代码</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">dword_403370 = <span class="number">0</span>;</span><br><span class="line">v1 = &amp;unk_403384;</span><br><span class="line">byte_403374 = <span class="number">48</span>;</span><br><span class="line">v2 = <span class="number">0</span>;</span><br><span class="line">dword_403378 = (<span class="keyword">int</span>)&amp;unk_403380;</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">&#123;</span><br><span class="line">  v3 = dword_402178[v2];</span><br><span class="line">  ++v2;</span><br><span class="line">  *(v1 - <span class="number">1</span>) = v3;</span><br><span class="line">  *v1 = (<span class="keyword">char</span> *)&amp;unk_403380 + <span class="number">12</span> * dword_402274[v2];</span><br><span class="line">  v1[<span class="number">1</span>] = (<span class="keyword">char</span> *)&amp;unk_403380 + <span class="number">12</span> * dword_4021F4[v2];</span><br><span class="line">  v1 += <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> ( (<span class="keyword">signed</span> <span class="keyword">int</span>)v1 &lt; (<span class="keyword">signed</span> <span class="keyword">int</span>)&amp;unk_403504 );</span><br></pre></td></tr></table></figure>
 <p>上面的代码是主函数开头的初始化部分</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">sub_401020(<span class="string">&quot;You need a flag to get out of this:\n&quot;</span>, a1);</span><br><span class="line">scan(<span class="string">&quot;%s&quot;</span>, &amp;input);</span><br><span class="line">v4 = dword_403370;                            <span class="comment">// 0</span></span><br><span class="line">v5 = byte_403374;                             <span class="comment">// 48</span></span><br><span class="line">v6 = <span class="number">5</span>;</span><br><span class="line">v7 = dword_403378;</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">&#123;</span><br><span class="line">  v11 = *(&amp;input + v6);</span><br><span class="line">  <span class="keyword">if</span> ( *(_DWORD *)v7 + v5 == v11 )</span><br><span class="line">  &#123;</span><br><span class="line">    v7 = *(_DWORD *)(v7 + <span class="number">4</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( v5 - *(_DWORD *)v7 != v11 )</span><br><span class="line">    &#123;</span><br><span class="line">      sub_401020(<span class="string">&quot;This is not flag~\n&quot;</span>, v10);</span><br><span class="line">      system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    v7 = *(_DWORD *)(v7 + <span class="number">8</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  v5 = *(&amp;input + v6);</span><br><span class="line">  ++v4;</span><br><span class="line">  ++v6;</span><br><span class="line">  byte_403374 = v5;</span><br><span class="line">  dword_403378 = v7;</span><br><span class="line">  dword_403370 = v4;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> ( v6 &lt; <span class="number">21</span> );</span><br></pre></td></tr></table></figure>
@@ -443,7 +445,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">175k</span>
+    <span title="站点总字数">176k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
