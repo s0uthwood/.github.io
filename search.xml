@@ -1434,17 +1434,8 @@
   <entry>
     <title>CISCN2021 RE writeup</title>
     <url>/2021/05/20/CISCN2021-RE-writeup/</url>
-    <content><![CDATA[<p>完成：</p>
-<ul>
-<li>glass</li>
-<li>baby_rc</li>
-<li>little_evil</li>
-</ul>
-<p>未完成：</p>
-<ul>
-<li>gift</li>
-<li>HMI</li>
-</ul>
+    <content><![CDATA[<p>完成：glass, baby_rc, little_evil</p>
+<p>未完成：gift, HMI</p>
 <a id="more"></a>
 <h1 id="glass"><a href="#glass" class="headerlink" title="glass"></a>glass</h1><p>安卓逆向，使用jeb打开，发现在java层仅进行了简单的输入，然后进入so层判断</p>
 <p>用ida打开so层，直接搜索java，进入判断函数</p>
