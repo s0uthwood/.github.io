@@ -1509,6 +1509,9 @@
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>做这道题的时候，最大的问题就是没有搜索足够的资料，如果第一步想出来的话的，以比赛的时间，应该还是有机会做出来这道题的，毕竟后续的工作都是体力活，一点一点做下去应该就差不多能出来了</p>
 <p>不过不管怎么说，补题的过程还是学到了很多东西的，比如“病毒式”混淆可以直接用输出来解，brainfuck的小型解释器怎么看，以及最后直接输出索引地址，做题经验++</p>
 ]]></content>
+      <categories>
+        <category>CTF</category>
+      </categories>
       <tags>
         <tag>CTF</tag>
         <tag>Reverse</tag>
