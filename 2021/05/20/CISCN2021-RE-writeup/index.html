@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s0uthwood.github.io/2021/05/20/CISCN2021-RE-writeup/珍贵截图.png">
 <meta property="article:published_time" content="2021-05-19T17:21:59.000Z">
-<meta property="article:modified_time" content="2021-05-21T19:43:11.624Z">
+<meta property="article:modified_time" content="2021-05-22T06:07:44.494Z">
 <meta property="article:author" content="s0uthwood">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="Reverse">
@@ -221,7 +221,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-22 03:43:11" itemprop="dateModified" datetime="2021-05-22T03:43:11+08:00">2021-05-22</time>
+                <time title="修改时间：2021-05-22 14:07:44" itemprop="dateModified" datetime="2021-05-22T14:07:44+08:00">2021-05-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -462,7 +462,7 @@
 <h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>这题难度不在于逆向，前期的基本分析以及后面需要打数据动调这些和逆向有关的操作，比赛的时候其实都想到了，但问题在于不知道还有 Modbus Slave 这种东西</p>
 <p>所以全程都很迷茫，完全不知道该怎么做，官方的提示早上才放出来，那会都收工准备补觉了（一个小时的时间，找数据范围+写脚本+爆破，根本来不及好吧）</p>
 <p>以及过程中的调数据就是无限二分，累的一批，这题说是 Misc 我都信</p>
-<p>最后的爆破数据量也太大了，参考的博客用go跑了两小时，我这边用c++跑了半个小时，不过队友用c好像只跑了半分钟，看截图只爆破了 $2\%$ 就出结果了，不知道怎么做到的，找时间问一下</p>
+<p>最后的爆破数据量也太大了，参考的博客用go跑了两小时，我这边用c++跑了半个小时，不过队友用c的多线程只跑了半分钟，看截图只爆破了 $2\%$ 就出结果了，应该是划分的位置正好在答案边上，有时间学习一下多线程</p>
 <p>综上：屑题</p>
 
     </div>
