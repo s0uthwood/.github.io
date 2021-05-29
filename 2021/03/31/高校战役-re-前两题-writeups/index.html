@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"s0uthwood.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="完成：cycle graph, 天津垓, fxck 被学长安利的比赛">
+  <meta name="description" content="完成：cycle graph, 天津垓, fxck, easyparser 被学长安利的比赛">
 <meta property="og:type" content="article">
 <meta property="og:title" content="高校战役 re writeups">
 <meta property="og:url" content="https://s0uthwood.github.io/2021/03/31/%E9%AB%98%E6%A0%A1%E6%88%98%E5%BD%B9-re-%E5%89%8D%E4%B8%A4%E9%A2%98-writeups/index.html">
 <meta property="og:site_name" content="s0uthwood&#39;s Blog">
-<meta property="og:description" content="完成：cycle graph, 天津垓, fxck 被学长安利的比赛">
+<meta property="og:description" content="完成：cycle graph, 天津垓, fxck, easyparser 被学长安利的比赛">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-31T12:33:02.000Z">
-<meta property="article:modified_time" content="2021-05-29T17:26:05.278Z">
+<meta property="article:modified_time" content="2021-05-29T19:43:14.664Z">
 <meta property="article:author" content="s0uthwood">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="Reverse">
@@ -218,7 +218,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-30 01:26:05" itemprop="dateModified" datetime="2021-05-30T01:26:05+08:00">2021-05-30</time>
+                <time title="修改时间：2021-05-30 03:43:14" itemprop="dateModified" datetime="2021-05-30T03:43:14+08:00">2021-05-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -259,7 +259,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>完成：cycle graph, 天津垓, fxck</p>
+        <p>完成：cycle graph, 天津垓, fxck, easyparser</p>
 <p>被学长安利的比赛</p>
 <a id="more"></a>
 <h1 id="cycle-graph"><a href="#cycle-graph" class="headerlink" title="cycle graph"></a>cycle graph</h1><h2 id="逆向代码"><a href="#逆向代码" class="headerlink" title="逆向代码"></a>逆向代码</h2><p>根据提示，这是一道纯算法题，拖到 ida 中，根据关键字符串定位到关键函数。查看核心代码</p>
@@ -336,6 +336,17 @@
 <blockquote>
 <p>拿到flag之后用程序验证，结果发现没有通过，以为自己只在第一层，base58分析错了，于是从头认真读代码<br>最后上网看了wp，才发现flag就是过不了验证</p>
 </blockquote>
+<h1 id="easyparser"><a href="#easyparser" class="headerlink" title="easyparser"></a>easyparser</h1><p>见过的最大的VM了，边动调边读指令</p>
+<p>先是一堆初始化，直接动调过去，找输入</p>
+<p>发现用了个循环，先将输入放到一个地址里</p>
+<p>判断最后一个是否为 <code>&#125;</code></p>
+<p>然后，将输入的一部分取出，存到了某个地址+0xE1到+0x100，正好32位</p>
+<p>然后判断一下头是不是 <code>flag&#123;</code></p>
+<p>接下来又进入一个循环，发现将某个地址的数字取出，存到了7号寄存器中，然后将对应位的输入取出，存到6号寄存器中</p>
+<p>对6号寄存器分别进行了 <code>^0x63</code> 和 <code>&lt;&lt;2</code> 两个指令</p>
+<p>然后和7号寄存器进行比较</p>
+<p>猜测对所有明文都进行了同样的加密，所以直接从地址中取出密文，解密</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cipher = [<span class="number">144</span>,<span class="number">332</span>,<span class="number">28</span>,<span class="number">240</span>,<span class="number">132</span>,<span class="number">60</span>,<span class="number">24</span>,<span class="number">64</span>,<span class="number">64</span>,<span class="number">240</span>,<span class="number">208</span>,<span class="number">88</span>,<span class="number">44</span>,<span class="number">8</span>,<span class="number">52</span>,<span class="number">240</span>,<span class="number">276</span>,<span class="number">240</span>,<span class="number">128</span>,<span class="number">44</span>,<span class="number">40</span>,<span class="number">52</span>,<span class="number">8</span>,<span class="number">240</span>,<span class="number">144</span>,<span class="number">68</span>,<span class="number">48</span>,<span class="number">80</span>,<span class="number">92</span>,<span class="number">44</span>,<span class="number">264</span>,<span class="number">240</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> cipher:</span><br><span class="line">    <span class="built_in">print</span> (<span class="built_in">chr</span>((c &gt;&gt; <span class="number">2</span>) ^ <span class="number">0x63</span>), end = <span class="string">&#x27;&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span> ()</span><br><span class="line"><span class="comment"># G0d_Bless_Wuhan_&amp;_China_Growth!_</span></span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -420,7 +431,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#cycle-graph"><span class="nav-number">1.</span> <span class="nav-text">cycle graph</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%86%E5%90%91%E4%BB%A3%E7%A0%81"><span class="nav-number">1.1.</span> <span class="nav-text">逆向代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95"><span class="nav-number">1.2.</span> <span class="nav-text">动态调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E6%B1%82%E8%A7%A3"><span class="nav-number">1.3.</span> <span class="nav-text">脚本求解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A9%E6%B4%A5%E5%9E%93"><span class="nav-number">2.</span> <span class="nav-text">天津垓</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%8F%8D%E8%B0%83%E8%AF%95"><span class="nav-number">2.1.</span> <span class="nav-text">反反调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-Authorize"><span class="nav-number">2.2.</span> <span class="nav-text">破解 Authorize</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#patch-SMC"><span class="nav-number">2.3.</span> <span class="nav-text">patch SMC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%95%E4%B8%80%EF%BC%88patch-%E6%96%B9%E6%B3%95%E5%90%8C-HGAME-FAKE%EF%BC%89"><span class="nav-number">2.3.1.</span> <span class="nav-text">法一（patch  方法同 HGAME FAKE）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%95%E4%BA%8C%EF%BC%88-idapython-%E8%87%AA%E5%8A%A8-patch%EF%BC%89"><span class="nav-number">2.3.2.</span> <span class="nav-text">法二（ idapython 自动 patch）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hijack"><span class="nav-number">2.4.</span> <span class="nav-text">hijack</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fxck"><span class="nav-number">3.</span> <span class="nav-text">fxck!</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#cycle-graph"><span class="nav-number">1.</span> <span class="nav-text">cycle graph</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%86%E5%90%91%E4%BB%A3%E7%A0%81"><span class="nav-number">1.1.</span> <span class="nav-text">逆向代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95"><span class="nav-number">1.2.</span> <span class="nav-text">动态调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E6%B1%82%E8%A7%A3"><span class="nav-number">1.3.</span> <span class="nav-text">脚本求解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A9%E6%B4%A5%E5%9E%93"><span class="nav-number">2.</span> <span class="nav-text">天津垓</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%8F%8D%E8%B0%83%E8%AF%95"><span class="nav-number">2.1.</span> <span class="nav-text">反反调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-Authorize"><span class="nav-number">2.2.</span> <span class="nav-text">破解 Authorize</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#patch-SMC"><span class="nav-number">2.3.</span> <span class="nav-text">patch SMC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%95%E4%B8%80%EF%BC%88patch-%E6%96%B9%E6%B3%95%E5%90%8C-HGAME-FAKE%EF%BC%89"><span class="nav-number">2.3.1.</span> <span class="nav-text">法一（patch  方法同 HGAME FAKE）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%95%E4%BA%8C%EF%BC%88-idapython-%E8%87%AA%E5%8A%A8-patch%EF%BC%89"><span class="nav-number">2.3.2.</span> <span class="nav-text">法二（ idapython 自动 patch）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hijack"><span class="nav-number">2.4.</span> <span class="nav-text">hijack</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fxck"><span class="nav-number">3.</span> <span class="nav-text">fxck!</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#easyparser"><span class="nav-number">4.</span> <span class="nav-text">easyparser</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -511,7 +522,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">226k</span>
+    <span title="站点总字数">227k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
