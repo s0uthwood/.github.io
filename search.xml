@@ -7,6 +7,7 @@
 <li>firmware：工控逆向</li>
 <li>[FlareOn4]greek_to_me：SMC校验</li>
 </ul>
+<a id="more"></a>
 <h1 id="firmware"><a href="#firmware" class="headerlink" title="firmware"></a>firmware</h1><p>一道水题，主要学习一下工控逆向</p>
 <p>不难看出，给的附件是squashfs文件，直接进行binwalk</p>
 <blockquote>
