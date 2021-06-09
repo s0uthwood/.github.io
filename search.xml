@@ -25,7 +25,7 @@
 <p>最后爆破出来是 <code>0xA2</code>，思考了一下怎么nc传递不可见字符，然后决定直接动调改内存</p>
 <p>下断点，然后修改buf，之后看一眼SMC解密结果，发现直接给flag了，去栈里dump一下</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
-<li>找时间学一下网络编程</li>
+<li>最近遇到了好几道网络编程和squashfs</li>
 <li>看出来了可以用angr梭，还是得好好学一下angr</li>
 </ul>
 ]]></content>
