@@ -181,6 +181,111 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/06/10/BUUOJ%E9%83%A8%E5%88%86RE%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="s0uthwood">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="s0uthwood's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/10/BUUOJ%E9%83%A8%E5%88%86RE%EF%BC%88%E4%BA%8C%EF%BC%89/" class="post-title-link" itemprop="url">BUUOJ RE (2)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-10 03:20:33 / 修改时间：03:33:05" itemprop="dateCreated datePublished" datetime="2021-06-10T03:20:33+08:00">2021-06-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/Reverse/" itemprop="url" rel="index"><span itemprop="name">Reverse</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>firmware：工控逆向</li>
+<li>[FlareOn4]greek_to_me：SMC校验</li>
+</ul>
+<h1 id="firmware"><a href="#firmware" class="headerlink" title="firmware"></a>firmware</h1><p>一道水题，主要学习一下工控逆向</p>
+<p>不难看出，给的附件是squashfs文件，直接进行binwalk</p>
+<blockquote>
+<p>在安装sasquatch时遇到了一些坑，好像必须clone到~/Downloads这种文件夹内才行</p>
+</blockquote>
+<p>binwalk之后逛一下目录，能够找到一个叫做 <code>backdoor</code> 的二进制文件</p>
+<p>目标是找到连接的ip和端口，进去找一找就能看到</p>
+<h1 id="FlareOn4-greek-to-me"><a href="#FlareOn4-greek-to-me" class="headerlink" title="[FlareOn4]greek_to_me"></a>[FlareOn4]greek_to_me</h1><p>尝试运行一下，发现不能输入</p>
+<p>逆向，发现127.0.0.1的字样，以及socket等明显的网络通信函数</p>
+<p>直接运行的时候看一下主机端口，发现是 <code>127.0.0.1:2222</code>，用Windows下的nc连上去就可以进行调试了</p>
+<p>SMC还是很明显的</p>
+<p>发现解SMC时仅用了第一个字节，但由于不知道里面有什么，猜测可能是对后面的字节进行验证，所以决定将程序本地复现一下，爆破解SMC的密钥</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> ida_chars[] =</span><br><span class="line">&#123;</span><br><span class="line">  <span class="number">0x33</span>, <span class="number">0xE1</span>, <span class="number">0xC4</span>, <span class="number">0x99</span>, <span class="number">0x11</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x16</span>, <span class="number">0xF0</span>, <span class="number">0x32</span>, </span><br><span class="line">  <span class="number">0x9F</span>, <span class="number">0xC4</span>, <span class="number">0x91</span>, <span class="number">0x17</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x14</span>, <span class="number">0xF0</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, </span><br><span class="line">  <span class="number">0x15</span>, <span class="number">0xF1</span>, <span class="number">0xC4</span>, <span class="number">0x91</span>, <span class="number">0x1A</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x1B</span>, <span class="number">0xE2</span>, <span class="number">0x06</span>, </span><br><span class="line">  <span class="number">0x81</span>, <span class="number">0x18</span>, <span class="number">0xF2</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x19</span>, <span class="number">0xF1</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x1E</span>, </span><br><span class="line">  <span class="number">0xF0</span>, <span class="number">0xC4</span>, <span class="number">0x99</span>, <span class="number">0x1F</span>, <span class="number">0xC4</span>, <span class="number">0x91</span>, <span class="number">0x1C</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x1D</span>, </span><br><span class="line">  <span class="number">0xE6</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x62</span>, <span class="number">0xEF</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x63</span>, <span class="number">0xF2</span>, <span class="number">0x06</span>, </span><br><span class="line">  <span class="number">0x81</span>, <span class="number">0x60</span>, <span class="number">0xE3</span>, <span class="number">0xC4</span>, <span class="number">0x99</span>, <span class="number">0x61</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x66</span>, <span class="number">0xBC</span>, </span><br><span class="line">  <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x67</span>, <span class="number">0xE6</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x64</span>, <span class="number">0xE8</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, </span><br><span class="line">  <span class="number">0x65</span>, <span class="number">0x9D</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x6A</span>, <span class="number">0xF2</span>, <span class="number">0xC4</span>, <span class="number">0x99</span>, <span class="number">0x6B</span>, <span class="number">0x06</span>, </span><br><span class="line">  <span class="number">0x81</span>, <span class="number">0x68</span>, <span class="number">0xA9</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x69</span>, <span class="number">0xEF</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x6E</span>, </span><br><span class="line">  <span class="number">0xEE</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x6F</span>, <span class="number">0xAE</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x6C</span>, <span class="number">0xE3</span>, <span class="number">0x06</span>, </span><br><span class="line">  <span class="number">0x81</span>, <span class="number">0x6D</span>, <span class="number">0xEF</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x72</span>, <span class="number">0xE9</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x73</span>, </span><br><span class="line">  <span class="number">0x7C</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> HIBYTE(x) ((x &amp; 0xFF00) &gt;&gt; 8)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">unsigned</span> <span class="keyword">short</span> buf = <span class="number">0</span>; buf &lt;= <span class="number">0xff</span>; buf++)&#123;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">char</span> new_char[<span class="number">130</span>]; </span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">char</span> *a1 = new_char;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            *a1 = (buf ^ ida_chars[i++]) + <span class="number">34</span>;</span><br><span class="line">            ++a1;</span><br><span class="line">        &#125; <span class="keyword">while</span> ( i &lt; <span class="number">121</span> );</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> v2 = <span class="number">0x79</span>;                                      <span class="comment">// 0x79</span></span><br><span class="line">        a1 = new_char;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">short</span> v3 = <span class="number">255</span>;</span><br><span class="line">        <span class="keyword">for</span> ( i = <span class="number">255</span>; v2; v3 = HIBYTE(v3) + (<span class="keyword">unsigned</span> <span class="keyword">char</span>)v3 ) &#123;</span><br><span class="line">            <span class="keyword">unsigned</span> <span class="keyword">short</span> v5 = i;</span><br><span class="line">            <span class="keyword">int</span> v6 = v2;</span><br><span class="line">            <span class="keyword">if</span> ( v2 &gt; <span class="number">0x14</span> )</span><br><span class="line">                v6 = <span class="number">0x14</span>;</span><br><span class="line">            v2 -= v6;</span><br><span class="line">            <span class="keyword">do</span> &#123;</span><br><span class="line">                v5 += *a1;</span><br><span class="line">                v3 += v5;</span><br><span class="line">                ++a1;</span><br><span class="line">                --v6;</span><br><span class="line">            &#125; <span class="keyword">while</span> ( v6 );</span><br><span class="line">            i = HIBYTE(v5) + (<span class="keyword">unsigned</span> <span class="keyword">char</span>)v5;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> ret = (HIBYTE(i) + (<span class="keyword">unsigned</span> <span class="keyword">char</span>)i) | ((v3 &lt;&lt; <span class="number">8</span>) + (v3 &amp; <span class="number">0xFF00</span>));</span><br><span class="line">        <span class="comment">// if (buf == &#x27;f&#x27;) </span></span><br><span class="line">        <span class="comment">//     printf(&quot;%x\n&quot;, ret); // 0xf51c</span></span><br><span class="line">        <span class="comment">// if (buf == &#x27;@&#x27;)</span></span><br><span class="line">        <span class="comment">//     printf(&quot;%x\n&quot;, ret); // 0x60ee</span></span><br><span class="line">        <span class="keyword">if</span> (ret == <span class="number">0xFB5E</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, buf);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// printf(&quot;%c %x\n&quot;, buf, ret);</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一开始给的范围小了（以为会是可见字符），一直爆破不出来，反复验证了好多次，后来才发现范围是 <code>0-0xff</code> </p>
+<p>最后爆破出来是 <code>0xA2</code>，思考了一下怎么nc传递不可见字符，然后决定直接动调改内存</p>
+<p>下断点，然后修改buf，之后看一眼SMC解密结果，发现直接给flag了，去栈里dump一下</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/05/27/%E8%AE%B0%E4%B8%80%E4%B8%AA%E6%8C%96%E7%9F%BF%E7%97%85%E6%AF%92/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -261,7 +366,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/05/26/5-26-BUUOJ/">
+    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/05/26/BUUOJ%E9%83%A8%E5%88%86RE%EF%BC%88%E4%B8%80%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -275,7 +380,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/05/26/5-26-BUUOJ/" class="post-title-link" itemprop="url">BUUOJ部分RE（一）</a>
+            <a href="/2021/05/26/BUUOJ%E9%83%A8%E5%88%86RE%EF%BC%88%E4%B8%80%EF%BC%89/" class="post-title-link" itemprop="url">BUUOJ部分RE（一）</a>
         </h2>
 
         <div class="post-meta">
@@ -342,7 +447,7 @@
 </ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/05/26/5-26-BUUOJ/#more" rel="contents">
+              <a class="btn" href="/2021/05/26/BUUOJ%E9%83%A8%E5%88%86RE%EF%BC%88%E4%B8%80%EF%BC%89/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -956,7 +1061,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/03/31/%E9%AB%98%E6%A0%A1%E6%88%98%E5%BD%B9-re-%E5%89%8D%E4%B8%A4%E9%A2%98-writeups/">
+    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/03/31/%E9%AB%98%E6%A0%A1%E6%88%98%E5%BD%B9-re-%E5%89%8D%E5%9B%9B%E9%A2%98-writeups/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -970,7 +1075,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/03/31/%E9%AB%98%E6%A0%A1%E6%88%98%E5%BD%B9-re-%E5%89%8D%E4%B8%A4%E9%A2%98-writeups/" class="post-title-link" itemprop="url">高校战役 re writeups</a>
+            <a href="/2021/03/31/%E9%AB%98%E6%A0%A1%E6%88%98%E5%BD%B9-re-%E5%89%8D%E5%9B%9B%E9%A2%98-writeups/" class="post-title-link" itemprop="url">高校战役 re writeups</a>
         </h2>
 
         <div class="post-meta">
@@ -1032,107 +1137,7 @@
 <p>被学长安利的比赛</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/31/%E9%AB%98%E6%A0%A1%E6%88%98%E5%BD%B9-re-%E5%89%8D%E4%B8%A4%E9%A2%98-writeups/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/03/25/VNCTF2021-re-FilpGame/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="s0uthwood">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="s0uthwood's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/25/VNCTF2021-re-FilpGame/" class="post-title-link" itemprop="url">VNCTF2021 re FilpGame</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-25 03:06:10" itemprop="dateCreated datePublished" datetime="2021-03-25T03:06:10+08:00">2021-03-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-20 01:47:01" itemprop="dateModified" datetime="2021-05-20T01:47:01+08:00">2021-05-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CTF/Reverse/" itemprop="url" rel="index"><span itemprop="name">Reverse</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>4.8k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>V&amp;NCTF2021 补题第二篇</p>
-<p>官方WP写的好玄学，其实用z3也可以解的</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/25/VNCTF2021-re-FilpGame/#more" rel="contents">
+              <a class="btn" href="/2021/03/31/%E9%AB%98%E6%A0%A1%E6%88%98%E5%BD%B9-re-%E5%89%8D%E5%9B%9B%E9%A2%98-writeups/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1223,7 +1228,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1236,7 +1241,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1298,12 +1303,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">227k</span>
+    <span title="站点总字数">229k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:26</span>
+    <span title="站点阅读时长">3:28</span>
 </div>
 
 <!--

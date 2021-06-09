@@ -6,7 +6,7 @@
   <link href="https://s0uthwood.github.io/atom.xml" rel="self"/>
   
   <link href="https://s0uthwood.github.io/"/>
-  <updated>2021-05-26T18:26:35.402Z</updated>
+  <updated>2021-06-09T19:33:05.746Z</updated>
   <id>https://s0uthwood.github.io/</id>
   
   <author>
@@ -15,6 +15,40 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>BUUOJ RE (2)</title>
+    <link href="https://s0uthwood.github.io/2021/06/10/BUUOJ%E9%83%A8%E5%88%86RE%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
+    <id>https://s0uthwood.github.io/2021/06/10/BUUOJ%E9%83%A8%E5%88%86RE%EF%BC%88%E4%BA%8C%EF%BC%89/</id>
+    <published>2021-06-09T19:20:33.000Z</published>
+    <updated>2021-06-09T19:33:05.746Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>firmware：工控逆向</li><li>[FlareOn4]greek_to_me：SMC校验</li></ul><h1 id="firmware"><a href="#firmware" class="headerlink" title="firmware"></a>firmware</h1><p>一道水题，主要学习一下工控逆向</p><p>不难看出，给的附件是squashfs文件，直接进行binwalk</p><blockquote><p>在安装sasquatch时遇到了一些坑，好像必须clone到~/Downloads这种文件夹内才行</p></blockquote><p>binwalk之后逛一下目录，能够找到一个叫做 <code>backdoor</code> 的二进制文件</p><p>目标是找到连接的ip和端口，进去找一找就能看到</p><h1 id="FlareOn4-greek-to-me"><a href="#FlareOn4-greek-to-me" class="headerlink" title="[FlareOn4]greek_to_me"></a>[FlareOn4]greek_to_me</h1><p>尝试运行一下，发现不能输入</p><p>逆向，发现127.0.0.1的字样，以及socket等明显的网络通信函数</p><p>直接运行的时候看一下主机端口，发现是 <code>127.0.0.1:2222</code>，用Windows下的nc连上去就可以进行调试了</p><p>SMC还是很明显的</p><p>发现解SMC时仅用了第一个字节，但由于不知道里面有什么，猜测可能是对后面的字节进行验证，所以决定将程序本地复现一下，爆破解SMC的密钥</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> ida_chars[] =</span><br><span class="line">&#123;</span><br><span class="line">  <span class="number">0x33</span>, <span class="number">0xE1</span>, <span class="number">0xC4</span>, <span class="number">0x99</span>, <span class="number">0x11</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x16</span>, <span class="number">0xF0</span>, <span class="number">0x32</span>, </span><br><span class="line">  <span class="number">0x9F</span>, <span class="number">0xC4</span>, <span class="number">0x91</span>, <span class="number">0x17</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x14</span>, <span class="number">0xF0</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, </span><br><span class="line">  <span class="number">0x15</span>, <span class="number">0xF1</span>, <span class="number">0xC4</span>, <span class="number">0x91</span>, <span class="number">0x1A</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x1B</span>, <span class="number">0xE2</span>, <span class="number">0x06</span>, </span><br><span class="line">  <span class="number">0x81</span>, <span class="number">0x18</span>, <span class="number">0xF2</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x19</span>, <span class="number">0xF1</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x1E</span>, </span><br><span class="line">  <span class="number">0xF0</span>, <span class="number">0xC4</span>, <span class="number">0x99</span>, <span class="number">0x1F</span>, <span class="number">0xC4</span>, <span class="number">0x91</span>, <span class="number">0x1C</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x1D</span>, </span><br><span class="line">  <span class="number">0xE6</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x62</span>, <span class="number">0xEF</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x63</span>, <span class="number">0xF2</span>, <span class="number">0x06</span>, </span><br><span class="line">  <span class="number">0x81</span>, <span class="number">0x60</span>, <span class="number">0xE3</span>, <span class="number">0xC4</span>, <span class="number">0x99</span>, <span class="number">0x61</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x66</span>, <span class="number">0xBC</span>, </span><br><span class="line">  <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x67</span>, <span class="number">0xE6</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x64</span>, <span class="number">0xE8</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, </span><br><span class="line">  <span class="number">0x65</span>, <span class="number">0x9D</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x6A</span>, <span class="number">0xF2</span>, <span class="number">0xC4</span>, <span class="number">0x99</span>, <span class="number">0x6B</span>, <span class="number">0x06</span>, </span><br><span class="line">  <span class="number">0x81</span>, <span class="number">0x68</span>, <span class="number">0xA9</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x69</span>, <span class="number">0xEF</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x6E</span>, </span><br><span class="line">  <span class="number">0xEE</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x6F</span>, <span class="number">0xAE</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x6C</span>, <span class="number">0xE3</span>, <span class="number">0x06</span>, </span><br><span class="line">  <span class="number">0x81</span>, <span class="number">0x6D</span>, <span class="number">0xEF</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x72</span>, <span class="number">0xE9</span>, <span class="number">0x06</span>, <span class="number">0x81</span>, <span class="number">0x73</span>, </span><br><span class="line">  <span class="number">0x7C</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> HIBYTE(x) ((x &amp; 0xFF00) &gt;&gt; 8)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">unsigned</span> <span class="keyword">short</span> buf = <span class="number">0</span>; buf &lt;= <span class="number">0xff</span>; buf++)&#123;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">char</span> new_char[<span class="number">130</span>]; </span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">char</span> *a1 = new_char;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            *a1 = (buf ^ ida_chars[i++]) + <span class="number">34</span>;</span><br><span class="line">            ++a1;</span><br><span class="line">        &#125; <span class="keyword">while</span> ( i &lt; <span class="number">121</span> );</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> v2 = <span class="number">0x79</span>;                                      <span class="comment">// 0x79</span></span><br><span class="line">        a1 = new_char;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">short</span> v3 = <span class="number">255</span>;</span><br><span class="line">        <span class="keyword">for</span> ( i = <span class="number">255</span>; v2; v3 = HIBYTE(v3) + (<span class="keyword">unsigned</span> <span class="keyword">char</span>)v3 ) &#123;</span><br><span class="line">            <span class="keyword">unsigned</span> <span class="keyword">short</span> v5 = i;</span><br><span class="line">            <span class="keyword">int</span> v6 = v2;</span><br><span class="line">            <span class="keyword">if</span> ( v2 &gt; <span class="number">0x14</span> )</span><br><span class="line">                v6 = <span class="number">0x14</span>;</span><br><span class="line">            v2 -= v6;</span><br><span class="line">            <span class="keyword">do</span> &#123;</span><br><span class="line">                v5 += *a1;</span><br><span class="line">                v3 += v5;</span><br><span class="line">                ++a1;</span><br><span class="line">                --v6;</span><br><span class="line">            &#125; <span class="keyword">while</span> ( v6 );</span><br><span class="line">            i = HIBYTE(v5) + (<span class="keyword">unsigned</span> <span class="keyword">char</span>)v5;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> ret = (HIBYTE(i) + (<span class="keyword">unsigned</span> <span class="keyword">char</span>)i) | ((v3 &lt;&lt; <span class="number">8</span>) + (v3 &amp; <span class="number">0xFF00</span>));</span><br><span class="line">        <span class="comment">// if (buf == &#x27;f&#x27;) </span></span><br><span class="line">        <span class="comment">//     printf(&quot;%x\n&quot;, ret); // 0xf51c</span></span><br><span class="line">        <span class="comment">// if (buf == &#x27;@&#x27;)</span></span><br><span class="line">        <span class="comment">//     printf(&quot;%x\n&quot;, ret); // 0x60ee</span></span><br><span class="line">        <span class="keyword">if</span> (ret == <span class="number">0xFB5E</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, buf);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// printf(&quot;%c %x\n&quot;, buf, ret);</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>一开始给的范围小了（以为会是可见字符），一直爆破不出来，反复验证了好多次，后来才发现范围是 <code>0-0xff</code> </p><p>最后爆破出来是 <code>0xA2</code>，思考了一下怎么nc传递不可见字符，然后决定直接动调改内存</p><p>下断点，然后修改buf，之后看一眼SMC解密结果，发现直接给flag了，去栈里dump一下</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;firmware：工控逆向&lt;/li&gt;
+&lt;li&gt;[FlareOn4]greek_to_me：SMC校验&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;firmware&quot;&gt;&lt;a href=&quot;#firmware&quot; class=&quot;headerlink&quot; title=&quot;firmw</summary>
+      
+    
+    
+    
+    <category term="CTF" scheme="https://s0uthwood.github.io/categories/CTF/"/>
+    
+    <category term="Reverse" scheme="https://s0uthwood.github.io/categories/CTF/Reverse/"/>
+    
+    
+    <category term="CTF" scheme="https://s0uthwood.github.io/tags/CTF/"/>
+    
+    <category term="Reverse" scheme="https://s0uthwood.github.io/tags/Reverse/"/>
+    
+    <category term="FlareOn" scheme="https://s0uthwood.github.io/tags/FlareOn/"/>
+    
+  </entry>
   
   <entry>
     <title>记一个挖矿病毒</title>
@@ -39,8 +73,8 @@
   
   <entry>
     <title>BUUOJ部分RE（一）</title>
-    <link href="https://s0uthwood.github.io/2021/05/26/5-26-BUUOJ/"/>
-    <id>https://s0uthwood.github.io/2021/05/26/5-26-BUUOJ/</id>
+    <link href="https://s0uthwood.github.io/2021/05/26/BUUOJ%E9%83%A8%E5%88%86RE%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <id>https://s0uthwood.github.io/2021/05/26/BUUOJ%E9%83%A8%E5%88%86RE%EF%BC%88%E4%B8%80%EF%BC%89/</id>
     <published>2021-05-26T15:54:09.000Z</published>
     <updated>2021-05-27T19:36:08.234Z</updated>
     
@@ -89,9 +123,9 @@
     <category term="Crypto" scheme="https://s0uthwood.github.io/categories/CTF/Crypto/"/>
     
     
-    <category term="Crypto" scheme="https://s0uthwood.github.io/tags/Crypto/"/>
-    
     <category term="CTF" scheme="https://s0uthwood.github.io/tags/CTF/"/>
+    
+    <category term="Crypto" scheme="https://s0uthwood.github.io/tags/Crypto/"/>
     
   </entry>
   
@@ -167,9 +201,9 @@
     <category term="Crypto" scheme="https://s0uthwood.github.io/categories/CTF/Crypto/"/>
     
     
-    <category term="Crypto" scheme="https://s0uthwood.github.io/tags/Crypto/"/>
-    
     <category term="CTF" scheme="https://s0uthwood.github.io/tags/CTF/"/>
+    
+    <category term="Crypto" scheme="https://s0uthwood.github.io/tags/Crypto/"/>
     
   </entry>
   
@@ -230,8 +264,8 @@
   
   <entry>
     <title>高校战役 re writeups</title>
-    <link href="https://s0uthwood.github.io/2021/03/31/%E9%AB%98%E6%A0%A1%E6%88%98%E5%BD%B9-re-%E5%89%8D%E4%B8%A4%E9%A2%98-writeups/"/>
-    <id>https://s0uthwood.github.io/2021/03/31/%E9%AB%98%E6%A0%A1%E6%88%98%E5%BD%B9-re-%E5%89%8D%E4%B8%A4%E9%A2%98-writeups/</id>
+    <link href="https://s0uthwood.github.io/2021/03/31/%E9%AB%98%E6%A0%A1%E6%88%98%E5%BD%B9-re-%E5%89%8D%E5%9B%9B%E9%A2%98-writeups/"/>
+    <id>https://s0uthwood.github.io/2021/03/31/%E9%AB%98%E6%A0%A1%E6%88%98%E5%BD%B9-re-%E5%89%8D%E5%9B%9B%E9%A2%98-writeups/</id>
     <published>2021-03-31T12:33:02.000Z</published>
     <updated>2021-05-29T19:43:14.664Z</updated>
     
@@ -324,9 +358,9 @@
     <category term="Crypto" scheme="https://s0uthwood.github.io/categories/CTF/Crypto/"/>
     
     
-    <category term="Crypto" scheme="https://s0uthwood.github.io/tags/Crypto/"/>
-    
     <category term="CTF" scheme="https://s0uthwood.github.io/tags/CTF/"/>
+    
+    <category term="Crypto" scheme="https://s0uthwood.github.io/tags/Crypto/"/>
     
     <category term="HGAME" scheme="https://s0uthwood.github.io/tags/HGAME/"/>
     
@@ -513,29 +547,6 @@
     <category term="fabric" scheme="https://s0uthwood.github.io/tags/fabric/"/>
     
     <category term="go" scheme="https://s0uthwood.github.io/tags/go/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>gRPC 介绍</title>
-    <link href="https://s0uthwood.github.io/2020/12/11/gRPC-%E4%BB%8B%E7%BB%8D/"/>
-    <id>https://s0uthwood.github.io/2020/12/11/gRPC-%E4%BB%8B%E7%BB%8D/</id>
-    <published>2020-12-10T18:12:29.000Z</published>
-    <updated>2021-05-19T17:42:06.569Z</updated>
-    
-    <content type="html"><![CDATA[<p>学习gRPC框架原理</p><a id="more"></a><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><blockquote><p>A high-performance, open-source universal RPC framework</p></blockquote><p>gRPC框架具有高性能，开源，跨语言的特点，使用了RPC框架，基于HTTP/2设计。</p><blockquote><p>RPC(<em>remote procedure call</em>，远程过程调用)框架提供了一套机制，使得应用程序之间可以进行通信，遵从server/client模型。<br>RPC将一个服务调用封装在一个本地方法中，让调用者像使用本地方法一样调用服务，对其屏蔽实现细节。具体的实现则通过调用方和服务方的协议，基于TCP连接进行数据交互达成。</p><p>在本地调用过程中，通常需要通过接口，调用具体实现，最终获取相应的数据。<br>而在RPC中，本地获取到接口，随后通过网络，调用远程的实现。在使用网络时，需要通过数据序列化来传输数据。</p></blockquote><p>在gRPC中，支持多个语言的应用程序的远程调用，数据交换格式则采用了<em>Protocol Buffer</em>。</p><p><img data-src="gRPC-basic.png" alt="gRPC-basic"></p><p>如上图所示，左侧为c++语言编写的客户端，其中包含了接口的具体实现。右侧为Ruby和Java客户端，其中对接口进行了调用。客户端获取接口后，将数据通过<em>Protocol Buffer</em>的序列化处理后交给服务端，服务端调用具体实现，并把数据同样以序列化的形式返回给客户端。</p>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;学习gRPC框架原理&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="fabric" scheme="https://s0uthwood.github.io/categories/fabric/"/>
-    
-    
-    <category term="fabric" scheme="https://s0uthwood.github.io/tags/fabric/"/>
-    
-    <category term="rpc" scheme="https://s0uthwood.github.io/tags/rpc/"/>
     
   </entry>
   
