@@ -11,7 +11,7 @@
 <h1 id="firmware"><a href="#firmware" class="headerlink" title="firmware"></a>firmware</h1><p>一道水题，主要学习一下工控逆向</p>
 <p>不难看出，给的附件是squashfs文件，直接进行binwalk</p>
 <blockquote>
-<p>在安装sasquatch时遇到了一些坑，好像必须clone到~/Downloads这种文件夹内才行</p>
+<p>在安装sasquatch时遇到了一些坑，好像必须clone到~/Downloads等文件夹内才行</p>
 </blockquote>
 <p>binwalk之后逛一下目录，能够找到一个叫做 <code>backdoor</code> 的二进制文件</p>
 <p>目标是找到连接的ip和端口，进去找一找就能看到</p>
