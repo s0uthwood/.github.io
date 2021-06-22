@@ -1928,7 +1928,7 @@
 <a id="more"></a>
 <h1 id="imnotavirus"><a href="#imnotavirus" class="headerlink" title="imnotavirus"></a>imnotavirus</h1><p>解exe，解密pyc</p>
 <p>找到注入的shellcode，用ida解smc，最后解密</p>
-<p>比赛的时候还顺便阅读了一下pyinstaller的源码，收获很大</p>
+<p>比赛的时候还被迫阅读了一下pyinstaller的源码，收获很大</p>
 <h1 id="内卷"><a href="#内卷" class="headerlink" title="内卷"></a>内卷</h1><p>这题是赛后边补边写的，所以废话略多</p>
 <h2 id="花指令"><a href="#花指令" class="headerlink" title="花指令"></a>花指令</h2><p>搜索静态字符串能找到很多有用的字符串，但发现找不到引用</p>
 <p>从start开始往里面翻一翻，发现有个一大片数据没有被解析出来，说明是个花指令，之前没见过这个花，简单记录一下</p>
