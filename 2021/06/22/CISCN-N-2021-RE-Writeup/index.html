@@ -28,7 +28,7 @@
 <meta property="og:description" content="题目质量很高 已完成：imnotavirus, 内卷 TODO: vs">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-22T15:25:43.000Z">
-<meta property="article:modified_time" content="2021-06-22T15:47:10.791Z">
+<meta property="article:modified_time" content="2021-06-25T14:04:59.143Z">
 <meta property="article:author" content="s0uthwood">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="Reverse">
@@ -211,10 +211,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-06-22 23:25:43 / 修改时间：23:47:10" itemprop="dateCreated datePublished" datetime="2021-06-22T23:25:43+08:00">2021-06-22</time>
+              <time title="创建时间：2021-06-22 23:25:43" itemprop="dateCreated datePublished" datetime="2021-06-22T23:25:43+08:00">2021-06-22</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-25 22:04:59" itemprop="dateModified" datetime="2021-06-25T22:04:59+08:00">2021-06-25</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -274,7 +280,7 @@
 <h2 id="混淆"><a href="#混淆" class="headerlink" title="混淆"></a>混淆</h2><p>比赛的时候想直接动调跳过这些运算的，结果看到和input还有关系，这就不好办了，尝试手动看一下这是什么运算，但也没啥想法</p>
 <p>结果，晚上再看这道题的时候发现竟然看懂这个离谱运算了，啊啊啊啊啊好气啊</p>
 <p>虽然有一堆函数，观察发现，通常每一个for循环中，包裹了两个while循环，但比赛的时候一直以for循环为单位在想代码的含义，晚上再看的时候才发现，每一个while循环才是一个单位函数</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">v1155 = ll;</span><br><span class="line">v1154 = <span class="number">1</span>i64;</span><br><span class="line">v1153 = ll &amp; <span class="number">1</span>;</span><br><span class="line">v1152 = ll ^ <span class="number">1</span>;</span><br><span class="line"><span class="keyword">while</span> ( v1153 ) &#123;</span><br><span class="line">    v1151 = v1152;</span><br><span class="line">    v1150 = <span class="number">2</span> * v1153;</span><br><span class="line">    v1153 = (<span class="number">2</span> * v1153) &amp; v1152;</span><br><span class="line">    v1152 ^= v1150;</span><br><span class="line">&#125;</span><br><span class="line">ll = v1173;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">v1041 = v1043;</span><br><span class="line">v1040 = v1045;</span><br><span class="line">v1039 = v1045 &amp; v1043;</span><br><span class="line">v1038 = v1045 ^ v1043; <span class="comment">// 解混淆方法：^ 换成 +，然后只保留这一行和最后一行</span></span><br><span class="line"><span class="keyword">while</span> ( v1039 ) &#123;</span><br><span class="line">    v1037 = v1038;</span><br><span class="line">    v1036 = <span class="number">2</span> * v1039;</span><br><span class="line">    v1039 = (<span class="number">2</span> * v1039) &amp; v1038;</span><br><span class="line">    v1038 ^= v1036;</span><br><span class="line">&#125;</span><br><span class="line">v1043 = v1038;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">v1155 = ll;</span><br><span class="line">v1154 = <span class="number">1</span>i64;</span><br><span class="line">v1153 = ll &amp; <span class="number">1</span>;</span><br><span class="line">v1152 = ll ^ <span class="number">1</span>;</span><br><span class="line"><span class="keyword">while</span> ( v1153 ) &#123;</span><br><span class="line">    v1151 = v1152;</span><br><span class="line">    v1150 = <span class="number">2</span> * v1153;</span><br><span class="line">    v1153 = (<span class="number">2</span> * v1153) &amp; v1152;</span><br><span class="line">    v1152 ^= v1150;</span><br><span class="line">&#125;</span><br><span class="line">ll = v1152;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">v1041 = v1043;</span><br><span class="line">v1040 = v1045;</span><br><span class="line">v1039 = v1045 &amp; v1043;</span><br><span class="line">v1038 = v1045 ^ v1043; <span class="comment">// 解混淆方法：^ 换成 +，然后只保留这一行和最后一行</span></span><br><span class="line"><span class="keyword">while</span> ( v1039 ) &#123;</span><br><span class="line">    v1037 = v1038;</span><br><span class="line">    v1036 = <span class="number">2</span> * v1039;</span><br><span class="line">    v1039 = (<span class="number">2</span> * v1039) &amp; v1038;</span><br><span class="line">    v1038 ^= v1036;</span><br><span class="line">&#125;</span><br><span class="line">v1043 = v1038;</span><br></pre></td></tr></table></figure>
 <p>简单地说，上面这段代码，最终的执行效果就是，<code>ll = ll + 1</code>，推广到下半部分，就是 <code>v1043 = v1038 = v1043 + v1045</code></p>
 <p>好了，到此，就可以完成解混淆了，之后就变成了一个for循环里面一条自增的语句，所以就转换成了乘法</p>
 <p>手动将这些代码整理好看一点，就长下面这样了</p>
