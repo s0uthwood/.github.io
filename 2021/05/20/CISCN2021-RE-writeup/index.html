@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"s0uthwood.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="完成：glass, baby_rc, little_evil, HMI 未完成：gift">
+  <meta name="description" content="glass baby_rc little_evil HMI gift  TODO: 研究gift">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CISCN2021 RE writeup">
 <meta property="og:url" content="https://s0uthwood.github.io/2021/05/20/CISCN2021-RE-writeup/index.html">
 <meta property="og:site_name" content="s0uthwood&#39;s Blog">
-<meta property="og:description" content="完成：glass, baby_rc, little_evil, HMI 未完成：gift">
+<meta property="og:description" content="glass baby_rc little_evil HMI gift  TODO: 研究gift">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s0uthwood.github.io/2021/05/20/CISCN2021-RE-writeup/珍贵截图.png">
 <meta property="article:published_time" content="2021-05-19T17:21:59.000Z">
-<meta property="article:modified_time" content="2021-05-22T06:07:44.494Z">
+<meta property="article:modified_time" content="2021-07-02T11:56:49.849Z">
 <meta property="article:author" content="s0uthwood">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="Reverse">
@@ -221,7 +221,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-22 14:07:44" itemprop="dateModified" datetime="2021-05-22T14:07:44+08:00">2021-05-22</time>
+                <time title="修改时间：2021-07-02 19:56:49" itemprop="dateModified" datetime="2021-07-02T19:56:49+08:00">2021-07-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -243,14 +243,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>17k</span>
+              <span>19k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>16 分钟</span>
+              <span>17 分钟</span>
             </span>
 
         </div>
@@ -262,8 +262,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>完成：glass, baby_rc, little_evil, HMI</p>
-<p>未完成：gift</p>
+        <ul>
+<li>glass</li>
+<li>baby_rc</li>
+<li>little_evil</li>
+<li>HMI</li>
+<li>gift</li>
+</ul>
+<p>TODO: 研究gift</p>
 <a id="more"></a>
 <h1 id="glass"><a href="#glass" class="headerlink" title="glass"></a>glass</h1><p>安卓逆向，使用jeb打开，发现在java层仅进行了简单的输入，然后进入so层判断</p>
 <p>用ida打开so层，直接搜索java，进入判断函数</p>
@@ -464,6 +470,18 @@
 <p>以及过程中的调数据就是无限二分，累的一批，这题说是 Misc 我都信</p>
 <p>最后的爆破数据量也太大了，参考的博客用go跑了两小时，我这边用c++跑了半个小时，不过队友用c的多线程只跑了半分钟，看截图只爆破了 $2\%$ 就出结果了，应该是划分的位置正好在答案边上，有时间学习一下多线程</p>
 <p>综上：屑题</p>
+<h1 id="gift"><a href="#gift" class="headerlink" title="gift"></a>gift</h1><p>新版本的GO对magic number以及一些结构上都做了修改，所以老版本的符号表修复脚本就不能用了，好在免费的ida7.6正好支持GO的符号表恢复，可以直接做了。</p>
+<p>主函数主要部分如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">main_CISCN6666666();</span><br><span class="line">main_CISCN66666666();</span><br><span class="line">main_CISCN6666666666();</span><br><span class="line">max_len_v2 = qword_928238; <span class="comment">// 0x20</span></span><br><span class="line">index_v3 = <span class="number">0L</span>L;</span><br><span class="line"><span class="keyword">while</span> ( (__int64)index_v3 &lt; max_len_v2 )</span><br><span class="line">&#123;</span><br><span class="line">  qword_9720E8 = <span class="number">0L</span>L;</span><br><span class="line">  <span class="keyword">if</span> ( qword_928238 &lt;= index_v3 )</span><br><span class="line">    runtime_panicIndex();</span><br><span class="line">  v14 = off_928230[index_v3];</span><br><span class="line">  runtime_makeslice((__int64)<span class="string">&quot;\b&quot;</span>, v14, v14, v10);</span><br><span class="line">  v5 = (__int64 *)v11;</span><br><span class="line">  v19 = (__int64 *)v11;</span><br><span class="line">  v4 = <span class="number">1L</span>L;</span><br><span class="line">  <span class="keyword">while</span> ( v4 &lt;= <span class="number">4</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    v12 = v4;</span><br><span class="line">    main_wtf(<span class="number">0L</span>L, v4, v5, v14, v14);</span><br><span class="line">    v4 = v12 + <span class="number">1</span>;</span><br><span class="line">    v5 = v19;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( (<span class="keyword">unsigned</span> __int64)qword_9720E8 &gt;= <span class="number">0x11</span> )</span><br><span class="line">    runtime_panicIndex();</span><br><span class="line">  v6 = *((_BYTE *)&amp;v16 + qword_9720E8);</span><br><span class="line">  v22[<span class="number">0</span>] = &amp;unk_8765E0;                       <span class="comment">// output_length</span></span><br><span class="line">  v22[<span class="number">1</span>] = &amp;qword_9239C0[v6 ^ <span class="number">0x66</span>u];         <span class="comment">// output</span></span><br><span class="line">  v8 = qword_92EAB0;</span><br><span class="line">  v10 = <span class="number">2L</span>L;</span><br><span class="line">  v1 = v22;</span><br><span class="line">  fmt_Fprintf(v0, (__int64)v22, (<span class="keyword">const</span> <span class="keyword">char</span> *)qword_9239C0);</span><br><span class="line">  index_v3 += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>开头的三个CISCN函数是简单的输出，中间生成空的slice然后扔到了wtf函数中，输出是根据索引，从<code>qword_9239C0</code>中选择一个字符。</p>
+<p>尝试运行的时候发现运行时间很长，但在程序中没有看到延时的操作，那么这道题应该是一个耗时的算法。</p>
+<p>观察发现 <code>wtf</code> 函数是一个递归函数，而 <code>off_928230</code> 中存的就是递归的深度。</p>
+<p>尝试找规律，直接将深度patch成 <code>1</code> 到 <code>0x20</code>，运行一下。</p>
+<p>得到如下结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Welcome to CISCN 2021!</span><br><span class="line">Here is our free flag for you as a gift:</span><br><span class="line">CISCN&#123;45b3247c45b3247c4</span><br></pre></td></tr></table></figure>
+<p>猜测最后的输出是有规律的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">cur_time = [ </span><br><span class="line">    <span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span>, <span class="number">0x0A</span>, <span class="number">0x0B</span>, <span class="number">0x0C</span>, <span class="number">0x0D</span>, <span class="number">0x0E</span>, <span class="number">0x0F</span>, <span class="number">0x10</span>, <span class="number">0x11</span>, <span class="number">0x12</span>, <span class="number">0x14</span>, <span class="number">0x19</span>, <span class="number">0x1E</span>,</span><br><span class="line">    <span class="number">0x28</span>, <span class="number">0x42</span>, <span class="number">0x66</span>, <span class="number">0x0A0</span>, <span class="number">0x936</span>, <span class="number">0x3D21</span>, <span class="number">0x149A7</span>, <span class="number">0x243AC</span>, <span class="number">0x0CB5BE</span>, <span class="number">0x47DC61</span>, <span class="number">0x16C0F46</span>, </span><br><span class="line">    <span class="number">0x262C432</span>, <span class="number">0x4ACE299</span>, <span class="number">0x10FBC92A</span>, <span class="number">0x329ECDFD</span>, <span class="number">0x370D7470</span></span><br><span class="line">]</span><br><span class="line">res = [<span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;5&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;7&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> (<span class="string">&#x27;CISCN&#123;&#x27;</span>, end = <span class="string">&#x27;&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> cur_time:</span><br><span class="line">    <span class="built_in">print</span> (res[c % <span class="built_in">len</span>(res)], end = <span class="string">&#x27;&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span> (<span class="string">&#x27;&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> (<span class="string">&#x27;CISCN&#123;4b445b3247c45344c54c44734445452c&#125;&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>和最后的正确结果做个对比，发现一样。</p>
 
     </div>
 
@@ -549,7 +567,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#glass"><span class="nav-number">1.</span> <span class="nav-text">glass</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#baby-bc"><span class="nav-number">2.</span> <span class="nav-text">baby_bc</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#little-evil"><span class="nav-number">3.</span> <span class="nav-text">little_evil</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%88%86%E6%9E%90"><span class="nav-number">3.1.</span> <span class="nav-text">基本分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E8%BE%93%E5%87%BA%E5%8E%BB%E6%B7%B7%E6%B7%86"><span class="nav-number">3.2.</span> <span class="nav-text">利用输出去混淆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Brainfuck-%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB"><span class="nav-number">3.3.</span> <span class="nav-text">Brainfuck 代码阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HMI"><span class="nav-number">4.</span> <span class="nav-text">HMI</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%86%E5%90%91%E5%88%86%E6%9E%90"><span class="nav-number">4.1.</span> <span class="nav-text">逆向分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Modbus-Slave%E8%B0%83%E8%AF%95"><span class="nav-number">4.2.</span> <span class="nav-text">Modbus Slave调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%88%86%E7%A0%B4"><span class="nav-number">4.3.</span> <span class="nav-text">爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">4.4.</span> <span class="nav-text">结论</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#glass"><span class="nav-number">1.</span> <span class="nav-text">glass</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#baby-bc"><span class="nav-number">2.</span> <span class="nav-text">baby_bc</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#little-evil"><span class="nav-number">3.</span> <span class="nav-text">little_evil</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%88%86%E6%9E%90"><span class="nav-number">3.1.</span> <span class="nav-text">基本分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E8%BE%93%E5%87%BA%E5%8E%BB%E6%B7%B7%E6%B7%86"><span class="nav-number">3.2.</span> <span class="nav-text">利用输出去混淆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Brainfuck-%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB"><span class="nav-number">3.3.</span> <span class="nav-text">Brainfuck 代码阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HMI"><span class="nav-number">4.</span> <span class="nav-text">HMI</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%86%E5%90%91%E5%88%86%E6%9E%90"><span class="nav-number">4.1.</span> <span class="nav-text">逆向分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Modbus-Slave%E8%B0%83%E8%AF%95"><span class="nav-number">4.2.</span> <span class="nav-text">Modbus Slave调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%88%86%E7%A0%B4"><span class="nav-number">4.3.</span> <span class="nav-text">爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">4.4.</span> <span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gift"><span class="nav-number">5.</span> <span class="nav-text">gift</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -640,12 +658,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">242k</span>
+    <span title="站点总字数">244k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:40</span>
+    <span title="站点阅读时长">3:42</span>
 </div>
 
 <!--
