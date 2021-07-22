@@ -1966,7 +1966,11 @@
     <title>CISCN-N 2021 RE Writeup</title>
     <url>/2021/06/22/CISCN-N-2021-RE-Writeup/</url>
     <content><![CDATA[<p>题目质量很高，终于补完了</p>
-<p>已完成：imnotavirus, 内卷, vs</p>
+<ul>
+<li>imnotavirus</li>
+<li>内卷</li>
+<li>vs</li>
+</ul>
 <a id="more"></a>
 <h1 id="imnotavirus"><a href="#imnotavirus" class="headerlink" title="imnotavirus"></a>imnotavirus</h1><p>解exe，解密pyc</p>
 <p>利用解密后的pyc，找到注入的shellcode，用ida解smc，最后解密</p>
