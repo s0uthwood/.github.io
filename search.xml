@@ -2108,6 +2108,7 @@
 <li>[Zer0pts2020]QR Puzzle</li>
 <li>[XMAN2018排位赛]easyvm</li>
 </ul>
+<a id="more"></a>
 <h1 id="FBCTF-go-get-the-flag"><a href="#FBCTF-go-get-the-flag" class="headerlink" title="[FBCTF]go_get_the_flag"></a>[FBCTF]go_get_the_flag</h1><p>没想到能在第五页见到memequal的题，真正的baby</p>
 <h1 id="Zer0pts2020-QR-Puzzle"><a href="#Zer0pts2020-QR-Puzzle" class="headerlink" title="[Zer0pts2020]QR Puzzle"></a>[Zer0pts2020]QR Puzzle</h1><h2 id="文件处理"><a href="#文件处理" class="headerlink" title="文件处理"></a>文件处理</h2><p>QR文件是25*25的字符串，每一位都是字符0或1</p>
 <p>key文件每一行格式为 <code>a#(b,c)</code>，最后存储到链表中，末尾在前，具体结构为 <code>int b, int c, int a, 0, *next</code></p>
