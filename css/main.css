@@ -1236,7 +1236,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #d1784a;
+  background: #ff0e67;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2760,16 +2760,16 @@ body {
 }
 */
 .content-wrap {
-  opacity: 0.85;
+  opacity: 0.9;
 }
 .sidebar {
   opacity: 0.9;
 }
 .header-inner {
-  background: rgba(0,0,0,0.85);
+  background: rgba(0,0,0,0.9);
 }
 .popup {
-  opacity: 0.85;
+  opacity: 0.9;
 }
 body {
   background-image: url("https://api.ghser.com/random/pc.php");
