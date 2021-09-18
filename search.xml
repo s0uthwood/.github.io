@@ -1903,7 +1903,8 @@
   <entry>
     <title>加密与解密学习笔记</title>
     <url>/2021/09/19/%E5%8A%A0%E5%AF%86%E4%B8%8E%E8%A7%A3%E5%AF%86%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<a id="more"></a>
+    <content><![CDATA[<p>suibiankankan</p>
+<a id="more"></a>
 <h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><h2 id="分析的一般途径和策略"><a href="#分析的一般途径和策略" class="headerlink" title="分析的一般途径和策略"></a>分析的一般途径和策略</h2><ol>
 <li>学会软件的操作和使用方法 $\to$ 推测出软件的设计思想和编程思路</li>
 <li>静态分析：阅读反汇编的程序清单，利用人机交互的提示信息了解片段所完成的功能，宏观了解软件的编程思路</li>
