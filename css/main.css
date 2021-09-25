@@ -464,7 +464,7 @@ pre {
 }
 pre,
 code {
-  font-family: 'Noto Serif SC', consolas, Menlo, monospace, "PingFang SC", "Microsoft YaHei";
+  font-family: 'console', consolas, Menlo, monospace, "PingFang SC", "Microsoft YaHei";
 }
 code {
   background: #eee;
@@ -1236,7 +1236,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff0e67;
+  background: #4163a6;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2758,6 +2758,7 @@ body {
   background-attachment:fixed;
   background-size:100% 100%;
 }
+https://api.ghser.com/random/
 */
 .content-wrap {
   opacity: 0.9;
