@@ -2475,7 +2475,17 @@
 <li>动态调试，跟踪文件内容</li>
 </ol>
 <p>具体的破解方法与输入序列号类似</p>
-]]></content>
+<h2 id="网络验证"><a href="#网络验证" class="headerlink" title="网络验证"></a>网络验证</h2><p>软件必须从服务器中取得一些关键数据才能正确运行</p>
+<p>破解的思路是拦截服务器的数据包，并分析程序对该数据包的处理</p>
+<h3 id="相关API-1"><a href="#相关API-1" class="headerlink" title="相关API"></a>相关API</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">send</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    SOCKET s,                 <span class="comment">// 套接字描述符</span></span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> <span class="keyword">char</span> FAR *buf,      <span class="comment">// 缓冲区</span></span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">int</span> len,                  <span class="comment">// 发送数据的字节数</span></span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">int</span> flags                 <span class="comment">// 附加标志，一般为0</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">recv</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    SOCKET s,             <span class="comment">// 套接字描述符</span></span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">char</span> FAR *buf,        <span class="comment">// 缓冲区</span></span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">int</span> len,              <span class="comment">// 缓冲区buf的长度</span></span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">int</span> flags             <span class="comment">// 附加标志，一般为0</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>此外，还有微软扩展函数 <code>WSASend</code> 和 <code>WSARecv</code></p>
+<h3 id="破解思路"><a href="#破解思路" class="headerlink" title="破解思路"></a>破解思路</h3><p>当服务器发送的数据包固定时，可以搭建本地服务器，发送该数据包</p>
+<p>数据包不固定时，需要分析算法</p>
+<h1 id="加密算法"><a href="#加密算法" class="headerlink" title="加密算法"></a>加密算法</h1><p>略</p>
+<h1 id="Windows内核基础"><a href="#Windows内核基础" class="headerlink" title="Windows内核基础"></a>Windows内核基础</h1><h2 id="内核理论基础"><a href="#内核理论基础" class="headerlink" title="内核理论基础"></a>内核理论基础</h2><h3 id="权限级别"><a href="#权限级别" class="headerlink" title="权限级别"></a>权限级别</h3><p>CPU将权限分为 <code>R0~R3</code> 其中 <code>R0</code> 权限最高，运行内核，<code>R1</code> 和 <code>R2</code> 运行驱动程序，<code>R3</code> 权限最低，运行应用程序</p>
+<p>操作系统（Windows, Linux）为方便，将内核和驱动程序（内核态）运行在了 <code>R0</code> 层，将应用程序（用户态）运行在 <code>R3</code> 层，而没有使用 <code>R1</code> 和 <code>R2</code> ，因此 <code>AMD64</code> 取消了 <code>R1</code> 和 <code>R2</code> 层</p>
+<h3 id="内存空间布局"><a href="#内存空间布局" class="headerlink" title="内存空间布局"></a>内存空间布局</h3>]]></content>
       <categories>
         <category>CTF</category>
         <category>Reverse</category>
