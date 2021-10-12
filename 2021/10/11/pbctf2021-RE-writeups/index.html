@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|console:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"s0uthwood.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="又是被队友带飞的一场比赛呢  [RE]cosmo [RE]BinaryTree [RE]switchingitup">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pbctf2021 RE writeups">
+<meta property="og:url" content="https://s0uthwood.github.io/2021/10/11/pbctf2021-RE-writeups/index.html">
+<meta property="og:site_name" content="s0uthwood&#39;s Blog">
+<meta property="og:description" content="又是被队友带飞的一场比赛呢  [RE]cosmo [RE]BinaryTree [RE]switchingitup">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s0uthwood.github.io/2021/10/11/pbctf2021-RE-writeups/patch_pyc.png">
+<meta property="og:image" content="https://s0uthwood.github.io/2021/10/11/pbctf2021-RE-writeups/pyc_result.png">
+<meta property="article:published_time" content="2021-10-11T08:07:41.000Z">
+<meta property="article:modified_time" content="2021-10-12T06:45:41.801Z">
+<meta property="article:author" content="s0uthwood">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="Reverse">
+<meta property="article:tag" content="Writeup">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s0uthwood.github.io/2021/10/11/pbctf2021-RE-writeups/patch_pyc.png">
+
+<link rel="canonical" href="https://s0uthwood.github.io/2021/10/11/pbctf2021-RE-writeups/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>pbctf2021 RE writeups | s0uthwood's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="s0uthwood's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">s0uthwood's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://s0uthwood.github.io/2021/10/11/pbctf2021-RE-writeups/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar3.jpg">
+      <meta itemprop="name" content="s0uthwood">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="s0uthwood's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pbctf2021 RE writeups
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-11 16:07:41" itemprop="dateCreated datePublished" datetime="2021-10-11T16:07:41+08:00">2021-10-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-12 14:45:41" itemprop="dateModified" datetime="2021-10-12T14:45:41+08:00">2021-10-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/Reverse/" itemprop="url" rel="index"><span itemprop="name">Reverse</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>又是被队友带飞的一场比赛呢</p>
+<ul>
+<li>[RE]cosmo</li>
+<li>[RE]BinaryTree</li>
+<li>[RE]switchingitup</li>
+</ul>
+<a id="more"></a>
+<h1 id="cosmo"><a href="#cosmo" class="headerlink" title="cosmo"></a>cosmo</h1><p>main函数在 <code>sub_403066</code></p>
+<p>要求长度是38，简单看了一下加密逻辑，发现是两个字符一起加密并验证，还想用pintools试试，结果发现根本跑不起来</p>
+<p>于是又开始了快乐的手写爆破，不过这个比较简单，动调一下就知道只用了最下面的几行加密逻辑</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> qword_40C000[<span class="number">20</span>] = &#123;</span><br><span class="line">    <span class="number">21233875l</span>l,</span><br><span class="line">    <span class="number">69468586l</span>l,</span><br><span class="line">    <span class="number">146735755l</span>l,</span><br><span class="line">    <span class="number">251265871l</span>l,</span><br><span class="line">    <span class="number">379651085l</span>l,</span><br><span class="line">    <span class="number">536872170l</span>l,</span><br><span class="line">    <span class="number">719455639l</span>l,</span><br><span class="line">    <span class="number">924911196l</span>l,</span><br><span class="line">    <span class="number">1158088491l</span>l,</span><br><span class="line">    <span class="number">1412368333l</span>l,</span><br><span class="line">    <span class="number">1695680674l</span>l,</span><br><span class="line">    <span class="number">2005272944l</span>l,</span><br><span class="line">    <span class="number">2341407284l</span>l,</span><br><span class="line">    <span class="number">2698316511l</span>l,</span><br><span class="line">    <span class="number">3076262773l</span>l,</span><br><span class="line">    <span class="number">3483634782l</span>l,</span><br><span class="line">    <span class="number">3913551105l</span>l,</span><br><span class="line">    <span class="number">72486322l</span>l,</span><br><span class="line">    <span class="number">548474478l</span>l,</span><br><span class="line">    <span class="number">0l</span>l</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">encrypt</span><span class="params">(<span class="keyword">char</span> *a, <span class="keyword">int</span> len, <span class="keyword">int</span> cur)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> v5 = len;</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> v3 = qword_40C000[cur - <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">int</span> v6 = v3 &gt;&gt; <span class="number">16</span>;</span><br><span class="line">    <span class="keyword">int</span> v7 = v3 &amp; <span class="number">0xffff</span>;</span><br><span class="line">    <span class="keyword">while</span>(v5)&#123;</span><br><span class="line">        v7 += *a;</span><br><span class="line">        v6 += v7;</span><br><span class="line">        --v5;</span><br><span class="line">        ++a;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (v7 &gt; <span class="number">0xFFF0</span>)</span><br><span class="line">        v7 -= <span class="number">0xFFF1</span>;</span><br><span class="line">    <span class="keyword">return</span> v7 | ((v6 % <span class="number">0xFFF1</span>) &lt;&lt; <span class="number">16</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">test_cnt</span><span class="params">(<span class="keyword">int</span> cnt)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0x20</span>; i &lt; <span class="number">0x80</span>; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0x20</span>; j &lt; <span class="number">0x80</span>; j++)&#123;</span><br><span class="line">            <span class="keyword">char</span> a[] = &#123;i, j&#125;;</span><br><span class="line">            <span class="keyword">if</span> (encrypt(a, <span class="number">2</span>, cnt) == qword_40C000[cnt])&#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%c%c&quot;</span>, i, j);</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;pbctf&#123;&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">3</span>; i &lt; <span class="number">19</span>; i++)</span><br><span class="line">        test_cnt(i);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除了找main函数之外也没有什么特别的</p>
+<h1 id="BinaryTree"><a href="#BinaryTree" class="headerlink" title="BinaryTree"></a>BinaryTree</h1><p>这题逻辑还是比较清晰的，就是根据800bit的输入进行了800层SMC</p>
+<p>每一层都会对寄存器进行一个加法，然后决定下一个SMC的结果，大概是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">  jz Label</span><br><span class="line">  mov r8, [rdi + 0x____]    ; 具体寄存器忘了，随便写了个，中间一堆nop省略了</span><br><span class="line">  add r9, 0x__</span><br><span class="line">Label:</span><br><span class="line">  mov r8, [rdi + 0x____]</span><br><span class="line">  add r9, 0x__</span><br><span class="line">  jmp SMC</span><br></pre></td></tr></table></figure>
+<p>最后一层就是对寄存器进行cmp，小于等于某个值就行</p>
+<p>一开始还想着出题人仁慈一点，贪心就是最小（想直接用idapython自动跑），结果直接gg</p>
+<p>队友对每一层的可能性进行了遍历，发现每一层最多有16种可能</p>
+<p>于是这题就成了有向无环图求单源最短路径</p>
+<p>求解代码可以分成三个部分：从SMC结果提取关键数据，建图，跑SPFA</p>
+<p>其中SPFA是抄的，路径输出稍微修改一下就行</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0xfffffff</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAXN 16 * 800 + 5</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Cur_smc</span>&#123;</span></span><br><span class="line">    <span class="keyword">char</span> bytecode[<span class="number">0x30</span>];</span><br><span class="line">    <span class="keyword">int</span> depth;</span><br><span class="line">    <span class="keyword">int</span> len[<span class="number">2</span>];</span><br><span class="line">&#125;;</span><br><span class="line">Cur_smc cur_smc_code[MAXN];</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> smc_xor_code[<span class="number">0xFFFFF</span>];</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Edge</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> to;</span><br><span class="line">    <span class="keyword">int</span> len;</span><br><span class="line">    <span class="keyword">int</span> path;</span><br><span class="line">    Edge(<span class="keyword">int</span> to, <span class="keyword">int</span> len, <span class="keyword">int</span> path): to(to), len(len), path(path) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span> &lt;Edge&gt; G[MAXN];</span><br><span class="line"><span class="keyword">int</span> dist[MAXN];</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> FLAG_exist;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">my_strncmp</span><span class="params">(<span class="keyword">char</span> *a, <span class="keyword">char</span> *b, <span class="keyword">int</span> length)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; ++i)&#123;</span><br><span class="line">        <span class="keyword">if</span> (a[i] != b[i])</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">analysis_next</span><span class="params">(<span class="keyword">int</span> cur, <span class="keyword">int</span> direction)</span></span>&#123;</span><br><span class="line">    <span class="comment">// direction == 0 for bellow, direction == 1 for above</span></span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (cur_smc_code[cur].bytecode[i] == <span class="string">&#x27;\x90&#x27;</span>)&#123;</span><br><span class="line">        ++i;</span><br><span class="line">    &#125; <span class="comment">// pass &quot;nop&quot;</span></span><br><span class="line">    <span class="keyword">int</span> end_left = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> index_xor = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> START = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> END = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (cur_smc_code[cur].bytecode[i] == <span class="string">&#x27;\x74&#x27;</span>) <span class="comment">// always starts as &quot;jz label1&quot;</span></span><br><span class="line">        end_left = cur_smc_code[cur].bytecode[++i] + (++i);</span><br><span class="line">    <span class="keyword">if</span> (direction == <span class="number">1</span>)&#123;        <span class="comment">// if input bit is 1</span></span><br><span class="line">        START = <span class="number">0</span>;</span><br><span class="line">        END = end_left;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (direction == <span class="number">0</span>)&#123;  <span class="comment">// if input bit is 0</span></span><br><span class="line">        START = end_left;</span><br><span class="line">        END = <span class="number">0x20</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (i = START; i &lt; END; ++i)&#123;</span><br><span class="line">        <span class="comment">// read &quot;add r9, xx&quot;</span></span><br><span class="line">        <span class="keyword">if</span> (cur_smc_code[cur].bytecode[i] == <span class="string">&#x27;\x49&#x27;</span> &amp;&amp; cur_smc_code[cur].bytecode[i + <span class="number">1</span>] == <span class="string">&#x27;\x83&#x27;</span> &amp;&amp; cur_smc_code[cur].bytecode[i + <span class="number">2</span>] == <span class="string">&#x27;\xC1&#x27;</span>)</span><br><span class="line">            cur_smc_code[cur].len[direction] = cur_smc_code[cur].bytecode[i + <span class="number">3</span>];</span><br><span class="line">        <span class="comment">// read next key to SMC</span></span><br><span class="line">        <span class="keyword">if</span> (cur_smc_code[cur].bytecode[i] == <span class="string">&#x27;\x48&#x27;</span> &amp;&amp; cur_smc_code[cur].bytecode[i + <span class="number">1</span>] == <span class="string">&#x27;\x8D&#x27;</span> &amp;&amp; cur_smc_code[cur].bytecode[i + <span class="number">2</span>] == <span class="string">&#x27;\x5F&#x27;</span>)</span><br><span class="line">            index_xor = cur_smc_code[cur].bytecode[i + <span class="number">3</span>] &amp; <span class="number">0xff</span>;</span><br><span class="line">        <span class="keyword">if</span> (cur_smc_code[cur].bytecode[i] == <span class="string">&#x27;\x48&#x27;</span> &amp;&amp; cur_smc_code[cur].bytecode[i + <span class="number">1</span>] == <span class="string">&#x27;\x8D&#x27;</span> &amp;&amp; cur_smc_code[cur].bytecode[i + <span class="number">2</span>] == <span class="string">&#x27;\x9F&#x27;</span>)&#123;</span><br><span class="line">            index_xor = cur_smc_code[cur].bytecode[i + <span class="number">3</span>] &amp; <span class="number">0xff</span>;</span><br><span class="line">            index_xor |= (cur_smc_code[cur].bytecode[i + <span class="number">4</span>] &amp; <span class="number">0xff</span>) &lt;&lt; <span class="number">8</span>;</span><br><span class="line">            index_xor |= (cur_smc_code[cur].bytecode[i + <span class="number">5</span>] &amp; <span class="number">0xff</span>) &lt;&lt; <span class="number">16</span>;</span><br><span class="line">            index_xor |= (cur_smc_code[cur].bytecode[i + <span class="number">6</span>] &amp; <span class="number">0xff</span>) &lt;&lt; <span class="number">24</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">char</span> next_smc[<span class="number">0x30</span>];</span><br><span class="line">    <span class="built_in">memset</span>(next_smc, <span class="number">0</span>, <span class="keyword">sizeof</span>(next_smc));</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">0x20</span>; i++)&#123;</span><br><span class="line">        next_smc[i] = (<span class="keyword">char</span>)(cur_smc_code[cur].bytecode[i] ^ smc_xor_code[index_xor + i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> next_depth = cur_smc_code[cur].depth + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = (next_depth - <span class="number">1</span>) * <span class="number">16</span>; i &lt; (next_depth) * <span class="number">16</span>; ++i)&#123;</span><br><span class="line">        <span class="keyword">if</span> (cur_smc_code[i].depth == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (my_strncmp(next_smc, cur_smc_code[i].bytecode, <span class="number">0x20</span>))&#123;</span><br><span class="line">            FLAG_exist = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">return</span> i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    FLAG_exist = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">0x20</span>; j++)&#123;</span><br><span class="line">        cur_smc_code[i].bytecode[j] = next_smc[j];</span><br><span class="line">    &#125;</span><br><span class="line">    cur_smc_code[i].depth = next_depth;</span><br><span class="line">    <span class="keyword">if</span> (next_depth == <span class="number">801</span>)&#123;</span><br><span class="line">        FLAG_exist = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">set_up_map</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">queue</span> &lt;<span class="keyword">int</span>&gt; Q;</span><br><span class="line">    Q.push(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">while</span> (!Q.empty())&#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = Q.front();</span><br><span class="line">        Q.pop();</span><br><span class="line">        <span class="keyword">int</span> left = analysis_next(tmp, <span class="number">1</span>);</span><br><span class="line">        G[tmp].push_back(Edge(left, cur_smc_code[tmp].len[<span class="number">1</span>], <span class="number">1</span>));</span><br><span class="line">        <span class="keyword">if</span> (FLAG_exist) Q.push(left);</span><br><span class="line">        <span class="keyword">int</span> right = analysis_next(tmp, <span class="number">0</span>);</span><br><span class="line">        G[tmp].push_back(Edge(right, cur_smc_code[tmp].len[<span class="number">0</span>], <span class="number">0</span>));</span><br><span class="line">        <span class="keyword">if</span> (FLAG_exist) Q.push(right);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> Path[MAXN], flag[MAXN];</span><br><span class="line"><span class="keyword">bool</span> vis[MAXN];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Spfa</span><span class="params">(<span class="keyword">int</span> Start)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    dist[Start] = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">queue</span>&lt;Edge&gt; Q;</span><br><span class="line">    Q.push(Edge(Start, <span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>( !Q.empty() ) &#123;</span><br><span class="line">        Edge P = Q.front();</span><br><span class="line">        Q.pop();</span><br><span class="line">        vis[P.to] = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">int</span> len = G[P.to].size();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++) &#123;</span><br><span class="line">            Edge Pn = G[P.to][i];</span><br><span class="line">            <span class="keyword">if</span>(dist[Pn.to] &gt; dist[P.to] + Pn.len) &#123;</span><br><span class="line">                dist[Pn.to] = dist[P.to] + Pn.len;</span><br><span class="line">                Path[Pn.to] = P.to;</span><br><span class="line">                flag[Pn.to] = Pn.path;</span><br><span class="line">                <span class="keyword">if</span>( !vis[Pn.to] ) &#123;</span><br><span class="line">                    Q.push(Pn);</span><br><span class="line">                    vis[Pn.to] = <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PutPath</span><span class="params">(<span class="keyword">int</span> Star,<span class="keyword">int</span> End)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(Star == End)</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    PutPath(Star, Path[End]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, flag[End]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; MAXN; i++) &#123;</span><br><span class="line">        G[i].clear();</span><br><span class="line">        dist[i] = INF;</span><br><span class="line">        vis[i] = <span class="literal">false</span>;</span><br><span class="line">        Path[i] = i;</span><br><span class="line">    &#125;</span><br><span class="line">    FILE *fp = fopen(<span class="string">&quot;smc_code.txt&quot;</span>, <span class="string">&quot;r&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">0xC73E0</span>; ++i)&#123;</span><br><span class="line">        smc_xor_code[i] = fgetc(fp);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Init();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    <span class="built_in">memcpy</span>(cur_smc_code[<span class="number">0</span>].bytecode, <span class="string">&quot;\x90\x74\x0D\x48\x8D\x5F\x40\x90\x49\x83\xC1\x49\xEB\xC5\x90\x90\x48\x8D\x5F\x20\x90\x90\x90\x49\x83\xC1\x11\x90\x90\x90\xEB\xB3&quot;</span>, <span class="number">0x21</span>);</span><br><span class="line">    cur_smc_code[<span class="number">0</span>].depth = <span class="number">1</span>;</span><br><span class="line">    set_up_map();</span><br><span class="line">    Spfa(<span class="number">0</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%x\n&quot;</span>, dist[<span class="number">16</span> * <span class="number">800</span>]);</span><br><span class="line">    PutPath(<span class="number">0</span>, <span class="number">16</span> * <span class="number">800</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><del>好久没有用c写这些东西了，一开始全是bug（</del></p>
+<h1 id="switchingitup"><a href="#switchingitup" class="headerlink" title="switchingitup"></a>switchingitup</h1><p>题目描述就说了是 python 3.10.0，一开始还以为没啥区别，结果发现pycdas只支持到了3.9，3.10连反汇编都出不来，好在pycdc的pull requests里有人提交了一份3.10的（现在已经更新了）<del>差点考虑自己魔改pycdc了</del></p>
+<p>3.10加了一些新东西，一开始不知道看得很痛苦，后来查到之后感觉就不难了</p>
+<p>上一下目前手动反编译的结果</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> dis</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_func</span>():</span></span><br><span class="line"><span class="meta">    @__import__(&#x27;dataclasses&#x27;).dataclass</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">a1</span>:</span></span><br><span class="line">        x: <span class="built_in">int</span></span><br><span class="line">        y: <span class="built_in">str</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">key</span>(<span class="params">v1</span>):</span></span><br><span class="line">        <span class="keyword">for</span> e <span class="keyword">in</span> v1:</span><br><span class="line">            <span class="keyword">yield</span> e ^ <span class="number">1337</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">gene</span>(<span class="params">a</span>):</span></span><br><span class="line">        <span class="keyword">for</span> e <span class="keyword">in</span> a:</span><br><span class="line">            <span class="keyword">yield</span> e</span><br><span class="line">    </span><br><span class="line">    a1 = a1()</span><br><span class="line">    a3 = <span class="built_in">bytes</span>(key(<span class="built_in">iter</span>((<span class="number">1385</span>, <span class="number">1403</span>, <span class="number">1402</span>, <span class="number">1389</span>, <span class="number">1407</span>))))</span><br><span class="line">    a6 = <span class="built_in">__import__</span>(<span class="string">&#x27;hashlib&#x27;</span>).md5</span><br><span class="line">    I = <span class="built_in">input</span>(<span class="string">&quot;flag? &quot;</span>)</span><br><span class="line">    a4 = <span class="keyword">lambda</span> x: a6(x).hexdigest()</span><br><span class="line">    a5 = <span class="built_in">list</span>(I)</span><br><span class="line">    a2 = &#123;&#125;</span><br><span class="line">    a7 = <span class="number">-1</span></span><br><span class="line">    <span class="keyword">while</span> a5:</span><br><span class="line">        match a5:</span><br><span class="line">            case [<span class="string">&#x27;p&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;t&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;&#123;&#x27;</span>, *R, <span class="string">&#x27;&#125;&#x27;</span>]:</span><br><span class="line">                a7 = a7 + <span class="number">1</span></span><br><span class="line">                a2 |= &#123;<span class="number">0</span>:<span class="number">112</span>&#125; <span class="keyword">if</span> a7 <span class="keyword">or</span> <span class="built_in">len</span>(R) != <span class="number">32</span> <span class="keyword">else</span> &#123;&#125;</span><br><span class="line">                a5 = <span class="built_in">list</span>(gene(<span class="built_in">enumerate</span>(R)))</span><br><span class="line">            case a1(x, y):</span><br><span class="line">                a7 = a7 + <span class="number">1</span></span><br><span class="line">                a2 |= &#123;x:y&#125; <span class="keyword">if</span> x + <span class="number">1</span> != a7 <span class="keyword">or</span> a4(a3 * x)[x] != y <span class="keyword">else</span> &#123;&#125;</span><br><span class="line">            case _:</span><br><span class="line">                a2 |= &#123;<span class="number">1</span>:<span class="number">125</span>&#125;</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">    print(<span class="string">&#x27;Correct&#x27;</span> <span class="keyword">if</span> <span class="keyword">not</span> a2 <span class="keyword">else</span> <span class="string">&#x27;Nope&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> (dis.dis(test_func))</span><br></pre></td></tr></table></figure>
+<p>新的特性就是 <code>match case</code> 语句，感觉还是很实用的，学到了</p>
+<p>目前还有几个地方不太知道怎么写的</p>
+<p>一个是 <code>a2 |= &#123;&#125; if () else &#123;&#125;</code> 这里，题目里应该是把 <code>a7=a7+1</code> 放到了这一行里</p>
+<p>还有一个是 <code>GET_ITER</code> 和 <code>FOR_ITER</code> 在迭代部分是分开的，不太懂了</p>
+<p>不过仿照这这个逻辑写有些问题</p>
+<p>解决方案就是直接在 <code>.pyc</code> 文件里加一个输出，<code>a4(a3 * x)[x] != y</code> 给这个逻辑套上输出就行，改完后的pyasm文件长这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">276     LOAD_NAME               12: a2</span><br><span class="line">278     LOAD_NAME               13: a7</span><br><span class="line">280     LOAD_CONST              21: 1</span><br><span class="line">282     BINARY_ADD              </span><br><span class="line">284     DUP_TOP                 </span><br><span class="line">286     STORE_NAME              13: a7</span><br><span class="line">288     LOAD_NAME               18: x</span><br><span class="line">290     LOAD_CONST              21: 1</span><br><span class="line">292     BINARY_ADD              </span><br><span class="line">294     COMPARE_OP              3 (!&#x3D;)</span><br><span class="line">296     POP_JUMP_IF_TRUE        159 (to 318)</span><br><span class="line">                    --&gt; LOAD_NAME 20: print</span><br><span class="line">298     LOAD_NAME               9: a4</span><br><span class="line">300     LOAD_NAME               4: a3</span><br><span class="line">302     LOAD_NAME               18: x</span><br><span class="line">304     BINARY_MULTIPLY         </span><br><span class="line">306     CALL_FUNCTION           1</span><br><span class="line">308     LOAD_NAME               18: x</span><br><span class="line">310     BINARY_SUBSCR           </span><br><span class="line">                    --&gt; CALL_FUNCTION 1</span><br><span class="line">312     LOAD_NAME               19: y</span><br><span class="line">314     COMPARE_OP              3 (!&#x3D;)</span><br><span class="line">316     POP_JUMP_IF_FALSE       163 (to 326)</span><br></pre></td></tr></table></figure>
+<p>然后还有手动修改一下各个 <code>jump</code> 的目的地址，最后的二进制文件长这样</p>
+<p><img data-src="./patch_pyc.png" alt="patch_pyc"></p>
+<p>运行一下就有结果了</p>
+<p><img data-src="./pyc_result.png" alt="pyc_result"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+              <a href="/tags/Reverse/" rel="tag"># Reverse</a>
+              <a href="/tags/Writeup/" rel="tag"># Writeup</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/09/TSGCTF2021-RE-WP/" rel="prev" title="TSGCTF2021 RE WP">
+      <i class="fa fa-chevron-left"></i> TSGCTF2021 RE WP
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#cosmo"><span class="nav-number">1.</span> <span class="nav-text">cosmo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BinaryTree"><span class="nav-number">2.</span> <span class="nav-text">BinaryTree</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#switchingitup"><span class="nav-number">3.</span> <span class="nav-text">switchingitup</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="s0uthwood"
+      src="/images/avatar3.jpg">
+  <p class="site-author-name" itemprop="name">s0uthwood</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://psyduck0409.github.io/" title="https:&#x2F;&#x2F;psyduck0409.github.io&#x2F;" rel="noopener" target="_blank">DaiDai</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://justloseit.top/" title="http:&#x2F;&#x2F;justloseit.top&#x2F;" rel="noopener" target="_blank">Joker</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kfxp12138.github.io/" title="https:&#x2F;&#x2F;kfxp12138.github.io&#x2F;" rel="noopener" target="_blank">triplewings</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://fyhssgss.github.io/" title="https:&#x2F;&#x2F;fyhssgss.github.io&#x2F;" rel="noopener" target="_blank">FYHSSGSS</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://xz1548.github.io/" title="https:&#x2F;&#x2F;xz1548.github.io&#x2F;" rel="noopener" target="_blank">Zhr</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://newbiereer.github.io/" title="https:&#x2F;&#x2F;newbiereer.github.io&#x2F;" rel="noopener" target="_blank">NewBieReer</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">s0uthwood</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">322k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:52</span>
+</div>
+  <div class="powered-by">Powered By - <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+  <span class="post-meta-divider">|</span>
+  <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  <span class="post-meta-divider">|</span>
+  <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
