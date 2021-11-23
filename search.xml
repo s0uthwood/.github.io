@@ -3083,6 +3083,7 @@
 <ul>
 <li>[L3HCTF 2021]idaaaaaaaa</li>
 </ul>
+<a id="more"></a>
 <h1 id="N1CTF-babyrust"><a href="#N1CTF-babyrust" class="headerlink" title="[N1CTF]babyrust"></a>[N1CTF]babyrust</h1><p>题目直接给了Rust源码，之前没有见过，现查文档学习</p>
 <p>首先main函数里只是调用了一个 <code>check!</code></p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> result = check!(@s <span class="comment">/*your answer*/</span>);</span><br></pre></td></tr></table></figure>
