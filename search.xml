@@ -3245,4 +3245,37 @@
         <tag>Writeup</tag>
       </tags>
   </entry>
+  <entry>
+    <title>DragonCTF Runofthemill Writeup</title>
+    <url>/2021/12/10/DragonCTF-Runofthemill-Writeup/</url>
+    <content><![CDATA[<p>应该是，第一次在做题的时候用Angr吧，发现一个奇怪的问题，记录一下</p>
+<p>TODO: Capstone学习</p>
+<a id="more"></a>
+<h1 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h1><p>获取输入</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">v1 = sys_read(<span class="number">0</span>, byte_412000, <span class="number">0x40</span>uLL);</span><br></pre></td></tr></table></figure>
+<p>中间计算</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">byte_412000[<span class="number">42</span>] = __ROR1__(byte_412000[<span class="number">42</span>], <span class="number">4</span>);</span><br><span class="line">*(_DWORD *)&amp;byte_412000[<span class="number">44</span>] ^= <span class="number">0x4EC10FC6</span>u;</span><br><span class="line">*(_WORD *)&amp;byte_412000[<span class="number">15</span>] ^= <span class="number">0xEBFF</span>u;</span><br><span class="line">*(_DWORD *)&amp;byte_412000[<span class="number">38</span>] -= <span class="number">1698263770</span>;</span><br><span class="line"><span class="comment">// 以下省略</span></span><br></pre></td></tr></table></figure>
+<p>最后的验证</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">v9 = byte_412000;</span><br><span class="line">v10 = byte_412050;</span><br><span class="line">v11 = <span class="number">64L</span>L;</span><br><span class="line">v12 = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">&#123;</span><br><span class="line">  v12 |= *v10++ ^ *v9++;</span><br><span class="line">  --v11;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> ( v11 );</span><br></pre></td></tr></table></figure>
+<h1 id="Angr求解"><a href="#Angr求解" class="headerlink" title="Angr求解"></a>Angr求解</h1><p>还是很容易看懂的，主要是如何求解</p>
+<p>一种思路是把汇编反过来，pizza爷用的是这种做法，于是就写了个Angr喝茶去了</p>
+<p>Angr用的是手动往全局变量注入符号，然后在验证前停止，手动添加约束，wp中的写法是直接用程序中的验证，并添加了 <code>LAZY_SOLVES</code> 参数，学到了</p>
+<p>之前用自己脚本跑的适合发现一直是 <code>unsat</code>，以为Angr会有问题，但后来发现有个wp就是用的Angr</p>
+<p>于是掏出了之前写的脚本做了一些尝试</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">from angr import *</span><br><span class="line">import claripy</span><br><span class="line">import binascii</span><br><span class="line"></span><br><span class="line">input_length &#x3D; 56</span><br><span class="line"></span><br><span class="line">base_addr &#x3D; 0x400000</span><br><span class="line">proj &#x3D; Project(&#39;runofthemill&#39;, main_opts&#x3D;&#123;&quot;base_addr&quot;: base_addr&#125;)</span><br><span class="line"></span><br><span class="line">start_addr &#x3D; 0x401054</span><br><span class="line">state &#x3D; proj.factory.blank_state(addr &#x3D; start_addr, add_options&#x3D;&#123;options.LAZY_SOLVES&#125;)</span><br><span class="line"># state.regs.rdi &#x3D; 0x412000</span><br><span class="line">user_input &#x3D; [claripy.BVS(&#39;input_%d&#39; % i, 8) for i in range(input_length)]</span><br><span class="line"></span><br><span class="line">mem_addr &#x3D; 0x412000</span><br><span class="line">for i in range(input_length):</span><br><span class="line">    state.memory.store(mem_addr + i, user_input[i])</span><br><span class="line">state.add_constraints(state.memory.load(mem_addr, 6) &#x3D;&#x3D; int(binascii.hexlify(b&quot;DrgnS&#123;&quot;), 16))</span><br><span class="line">simgr &#x3D; proj.factory.simgr(state)</span><br><span class="line"></span><br><span class="line">find_addr &#x3D; 0x4117FF</span><br><span class="line"></span><br><span class="line">simgr.explore(find &#x3D; find_addr)</span><br><span class="line"></span><br><span class="line">ans &#x3D; [</span><br><span class="line">    0xB5, 0x9C, 0x9A, 0x08, 0x68, 0x91, 0x29, 0x0F, 0xBD, 0x1E, </span><br><span class="line">    0xFB, 0x71, 0xF4, 0x93, 0x5C, 0xDA, 0x0D, 0x94, 0x10, 0x77, </span><br><span class="line">    0x6C, 0x41, 0x8D, 0xE2, 0x5E, 0x26, 0xA5, 0x0A, 0x95, 0xE1, </span><br><span class="line">    0x14, 0xDB, 0x25, 0x0B, 0x09, 0xE4, 0x7B, 0xE7, 0x07, 0x71, </span><br><span class="line">    0x4E, 0xD3, 0xF2, 0xC1, 0x5C, 0xB2, 0xB4, 0x17, 0x30, 0xAA, </span><br><span class="line">    0x3D, 0x35, 0x1E, 0x98, 0xC4, 0x92, 0xF4, 0x33, 0x69, 0xCC, </span><br><span class="line">    0x11, 0xB0, 0xCE, 0xCC</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">if simgr.found:</span><br><span class="line">    print (&quot;end state found&quot;)</span><br><span class="line">    end_state &#x3D; simgr.found[0]</span><br><span class="line">    for i in range(64):</span><br><span class="line">        end_state.add_constraints(end_state.memory.load(mem_addr + i, 1) &#x3D;&#x3D; ans[i])</span><br><span class="line">    for i in range(input_length):</span><br><span class="line">        print (end_state.solver.eval(user_input[i], cast_to&#x3D;bytes).decode(), end&#x3D;&#39;&#39;)</span><br><span class="line">    print ()</span><br><span class="line">else:</span><br><span class="line">    print (&quot;No result&quot;)</span><br></pre></td></tr></table></figure>
+<p>最后发现只要把 <code>input_length</code> 设置为56及以下就可以，其他的都是 <code>unsat</code></p>
+<h1 id="capstone学习"><a href="#capstone学习" class="headerlink" title="capstone学习"></a>capstone学习</h1><p>TODO</p>
+<p>后续学习一下再来补</p>
+]]></content>
+      <categories>
+        <category>CTF</category>
+        <category>Reverse</category>
+      </categories>
+      <tags>
+        <tag>CTF</tag>
+        <tag>Reverse</tag>
+        <tag>DragonCTF</tag>
+        <tag>Angr</tag>
+      </tags>
+  </entry>
 </search>
